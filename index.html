@@ -14,8 +14,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
-/* TOP BAR */
 .topbar{background:var(--navy);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
 .topbar-brand{display:flex;align-items:center;gap:.6rem;font-family:'Sora',sans-serif;font-weight:800;font-size:1rem;color:#fff;letter-spacing:.5px;white-space:nowrap}
 .topbar-brand span{color:var(--cyan)}
@@ -26,35 +24,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .topbar-right{display:flex;gap:.5rem;align-items:center}
 .verba-chip{background:rgba(0,168,232,.15);border:1px solid var(--cyan);color:var(--cyan);padding:.3rem .85rem;border-radius:20px;font-size:.78rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;transition:all .2s;white-space:nowrap}
 .verba-chip:hover{background:var(--cyan);color:var(--navy)}
-
-/* PAGES */
 .page{display:none;padding:1.75rem;max-width:860px;margin:0 auto}
 .page.active{display:block}
-
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,31,60,.75);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.open{display:flex}
 .modal{background:var(--card);border-radius:16px;padding:2rem;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:slideUp .25s ease;max-height:90vh;overflow-y:auto}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal h3{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:1.25rem}
 .modal-close{margin-top:1.25rem;width:100%;padding:.7rem;border-radius:8px;background:var(--navy);color:#fff;border:none;cursor:pointer;font-family:'Sora',sans-serif;font-weight:600}
-
-/* VERBA ROWS */
 .verba-row{padding:.7rem 1rem;background:var(--bg);border-radius:10px;margin-bottom:.5rem;font-size:.88rem}
 .verba-row strong{font-family:'Sora',sans-serif;color:var(--navy);display:block;margin-bottom:.3rem}
-.verba-numbers{display:flex;gap:1rem;font-size:.78rem;margin-bottom:.4rem}
+.verba-numbers{display:flex;gap:1rem;font-size:.78rem;margin-bottom:.4rem;flex-wrap:wrap}
 .verba-bar-bg{height:6px;background:var(--border);border-radius:3px}
 .verba-bar-fill{height:6px;border-radius:3px;transition:width .4s}
 .verba-edit-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.6rem}
 .verba-edit-row label{flex:1;font-size:.85rem;color:var(--muted)}
 .verba-edit-row input{width:130px;padding:.4rem .6rem;border:1px solid var(--border);border-radius:6px;font-size:.9rem;font-family:'DM Sans',sans-serif}
-
-/* CARDS */
 .card{background:var(--card);border-radius:14px;padding:1.75rem;box-shadow:var(--shadow);margin-bottom:1.5rem}
 .card-title{font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:.5rem}
 .card-title .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan)}
-
-/* FORM */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .form-grid.one{grid-template-columns:1fr}
 .field{display:flex;flex-direction:column;gap:.35rem}
@@ -62,15 +50,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .field input,.field select,.field textarea{padding:.6rem .85rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;font-family:'DM Sans',sans-serif;color:var(--text);background:#fff;transition:border-color .2s}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,168,232,.12)}
 .field textarea{resize:vertical;min-height:80px}
-.field input.warn{border-color:var(--amber)!important;background:rgba(255,179,0,.05)}
-.field input.danger{border-color:var(--red)!important;background:rgba(229,57,53,.05)}
 .verba-hint{font-size:.75rem;margin-top:.25rem;padding:.3rem .6rem;border-radius:6px;display:none}
 .verba-hint.show{display:block}
 .verba-hint.ok{background:rgba(0,200,83,.1);color:var(--green)}
 .verba-hint.warn{background:rgba(255,179,0,.1);color:#B45309}
 .verba-hint.danger{background:rgba(229,57,53,.1);color:var(--red)}
-
-/* CHECKLIST */
 .checklist-item{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--border);font-size:.9rem}
 .checklist-item:last-child{border-bottom:none}
 .checklist-item .q{flex:1;padding-right:1rem}
@@ -79,8 +63,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .radio-pair input[type=radio]{display:none}
 .radio-sim:has(input:checked){border-color:var(--green);background:rgba(0,200,83,.1);color:var(--green)}
 .radio-nao:has(input:checked){border-color:var(--red);background:rgba(229,57,53,.1);color:var(--red)}
-
-/* BUTTONS */
 .btn-primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;border:none;padding:.85rem 2rem;border-radius:10px;font-family:'Sora',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;width:100%;box-shadow:0 4px 15px rgba(0,168,232,.3)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,168,232,.4)}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
@@ -92,21 +74,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .btn-approve:hover{background:var(--green);color:#fff}
 .btn-export{background:rgba(124,58,237,.1);color:var(--purple);border:1.5px solid var(--purple);padding:.45rem .9rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
 .btn-export:hover{background:var(--purple);color:#fff}
-
-/* BADGES */
 .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .7rem;border-radius:20px;font-size:.75rem;font-weight:700;font-family:'Sora',sans-serif}
 .badge-pending{background:rgba(255,179,0,.15);color:var(--amber);border:1px solid var(--amber)}
 .badge-approved{background:rgba(0,200,83,.15);color:var(--green);border:1px solid var(--green)}
 .badge-rejected{background:rgba(229,57,53,.15);color:var(--red);border:1px solid var(--red)}
-
-/* PROTOCOL BOX */
 .protocol-box{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.protocol-box .proto-id{font-family:'Sora',sans-serif;font-size:1.4rem;font-weight:800;letter-spacing:2px;color:var(--cyan)}
-.protocol-box .proto-label{font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:.5px}
-.protocol-box .proto-copy{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.35rem .75rem;border-radius:6px;font-size:.78rem;cursor:pointer;font-family:'Sora',sans-serif;font-weight:600;white-space:nowrap}
-.protocol-box .proto-copy:hover{background:rgba(255,255,255,.25)}
-
-/* SOL CARDS */
+.proto-big{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);letter-spacing:3px;background:var(--bg);border:2px dashed var(--cyan);border-radius:12px;padding:.75rem 2rem;display:inline-block;margin-bottom:1.5rem}
 .sol-card{background:var(--card);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:.85rem;box-shadow:var(--shadow);border-left:4px solid var(--border);transition:all .2s}
 .sol-card.pending{border-left-color:var(--amber)}
 .sol-card.approved{border-left-color:var(--green)}
@@ -129,26 +102,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .dot-s{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .dot-s.sim{background:var(--green)}
 .dot-s.nao{background:var(--red)}
-.sol-obs{margin-top:.6rem;padding:.5rem .75rem;background:rgba(255,179,0,.1);border-left:3px solid var(--amber);border-radius:0 6px 6px 0;font-size:.8rem;color:var(--text)}
-.sol-obs.approved-obs{background:rgba(0,200,83,.08);border-left-color:var(--green)}
-.sol-obs.rejected-obs{background:rgba(229,57,53,.08);border-left-color:var(--red)}
+.sol-obs{margin-top:.6rem;padding:.5rem .75rem;border-left:3px solid var(--amber);border-radius:0 6px 6px 0;font-size:.8rem}
+.sol-obs.approved{background:rgba(0,200,83,.08);border-left-color:var(--green)}
+.sol-obs.rejected{background:rgba(229,57,53,.08);border-left-color:var(--red)}
+.sol-obs.pending{background:rgba(255,179,0,.08)}
 .obs-field textarea{width:100%;padding:.5rem .7rem;border:1.5px solid var(--border);border-radius:6px;font-size:.82rem;font-family:'DM Sans',sans-serif;resize:vertical;min-height:60px;margin-bottom:.5rem}
 .obs-field textarea:focus{outline:none;border-color:var(--cyan)}
-.obs-required{font-size:.72rem;color:var(--red);display:none}
-
-/* HISTORY LOG */
-.history-log{margin-top:.75rem}
-.history-item{display:flex;gap:.5rem;align-items:flex-start;font-size:.75rem;color:var(--muted);padding:.3rem 0;border-bottom:1px dashed var(--border)}
-.history-item:last-child{border-bottom:none}
-.history-item .h-time{white-space:nowrap;color:var(--muted);font-size:.7rem;flex-shrink:0}
-.history-item .h-action{color:var(--text)}
-.history-item .h-by{color:var(--cyan);font-weight:600}
-
-/* SEARCH */
 .search-box{display:flex;gap:.75rem;background:var(--card);padding:1.25rem 1.5rem;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.5rem;align-items:flex-end;flex-wrap:wrap}
 .search-box .field{flex:1;min-width:160px}
-
-/* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
 .stat-card{background:var(--card);border-radius:12px;padding:1.1rem;box-shadow:var(--shadow);text-align:center}
 .stat-card .num{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800}
@@ -157,54 +118,40 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .stat-card.appr .num{color:var(--green)}
 .stat-card.reje .num{color:var(--red)}
 .stat-card.total .num{color:var(--cyan)}
-
-/* PER-VENDEDOR VERBA */
 .vend-verba-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.6rem;flex-wrap:wrap}
 .vend-verba-row .vv-name{flex:1;min-width:120px;font-size:.85rem;color:var(--muted)}
 .vend-verba-row input{width:130px;padding:.4rem .6rem;border:1px solid var(--border);border-radius:6px;font-size:.88rem;font-family:'DM Sans',sans-serif}
-.vend-verba-row .vv-used{font-size:.75rem;color:var(--amber);white-space:nowrap}
-.vend-verba-row .vv-avail{font-size:.75rem;white-space:nowrap}
-
-/* LOCK */
 .lock-screen{max-width:360px;margin:3rem auto;background:var(--card);border-radius:16px;padding:2.5rem;box-shadow:var(--shadow);text-align:center}
 .lock-screen h3{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
 .lock-screen p{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
 .lock-icon{font-size:2.5rem;margin-bottom:1rem}
-
-/* PAGE HEADER */
 .page-header{margin-bottom:1.5rem}
 .page-header h2{font-family:'Sora',sans-serif;font-size:1.3rem;font-weight:800;color:var(--navy)}
 .page-header p{color:var(--muted);font-size:.85rem;margin-top:.3rem}
-
-/* EMPTY */
 .empty{text-align:center;padding:3rem;color:var(--muted)}
 .empty-icon{font-size:3rem;margin-bottom:.75rem}
 .empty p{font-size:.88rem}
-
-/* SUCCESS SCREEN */
 .success-screen{text-align:center;padding:2rem 1rem}
 .success-icon{font-size:3.5rem;margin-bottom:1rem;animation:pop .4s ease}
 @keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
 .success-screen h3{font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:800;color:var(--navy);margin-bottom:.5rem}
 .success-screen p{color:var(--muted);font-size:.88rem;margin-bottom:1.5rem}
-.proto-big{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);letter-spacing:3px;background:var(--bg);border:2px dashed var(--cyan);border-radius:12px;padding:.75rem 2rem;display:inline-block;margin-bottom:1.5rem}
-
-/* TOAST */
+.inner-tabs{display:flex;gap:.25rem;margin-bottom:1.25rem;border-bottom:2px solid var(--border);padding-bottom:0}
+.inner-tab{padding:.5rem 1rem;font-size:.85rem;font-family:'Sora',sans-serif;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.inner-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+.export-area{background:var(--bg);border-radius:10px;padding:1rem;margin-top:1rem}
+.export-row{display:flex;gap:.75rem;align-items:flex-end;flex-wrap:wrap}
+/* LOADING */
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(13,31,60,.6);backdrop-filter:blur(3px);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+.loading-overlay.show{display:flex}
+.spinner{width:44px;height:44px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--cyan);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-msg{color:#fff;font-family:'Sora',sans-serif;font-size:.9rem;font-weight:600}
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--navy);color:#fff;padding:.75rem 1.4rem;border-radius:10px;font-size:.85rem;font-family:'Sora',sans-serif;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.25);z-index:300;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:320px}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.success{border-left:4px solid var(--green)}
 .toast.error{border-left:4px solid var(--red)}
 .toast.info{border-left:4px solid var(--cyan)}
-
-/* TABS inside admin */
-.inner-tabs{display:flex;gap:.25rem;margin-bottom:1.25rem;border-bottom:2px solid var(--border);padding-bottom:0}
-.inner-tab{padding:.5rem 1rem;font-size:.85rem;font-family:'Sora',sans-serif;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
-.inner-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
-
-/* EXPORT area */
-.export-area{background:var(--bg);border-radius:10px;padding:1rem;margin-top:1rem}
-.export-row{display:flex;gap:.75rem;align-items:flex-end;flex-wrap:wrap}
-
 @media(max-width:640px){
   .form-grid{grid-template-columns:1fr}
   .sol-body{grid-template-columns:1fr 1fr}
@@ -219,6 +166,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </style>
 </head>
 <body>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-msg" id="loadingMsg">Aguarde...</div>
+</div>
 
 <!-- TOP BAR -->
 <div class="topbar">
@@ -237,7 +190,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <div class="modal-overlay" id="verbaModal">
   <div class="modal">
     <h3>💰 Verba Disponível — PNZ</h3>
-    <div id="verbaDisplay"></div>
+    <div id="verbaDisplay"><div style="text-align:center;padding:1rem;color:var(--muted)">Carregando...</div></div>
     <button class="modal-close" onclick="closeModal('verbaModal')">Fechar</button>
   </div>
 </div>
@@ -259,30 +212,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-<!-- ══ PAGE: SOLICITAR ══ -->
+<!-- PAGE: SOLICITAR -->
 <div class="page active" id="page-solicitar">
   <div class="page-header">
     <h2>📋 Nova Solicitação PNZ</h2>
     <p>Preencha todos os campos e o checklist antes de enviar.</p>
   </div>
-
   <div class="card">
     <div class="card-title"><div class="dot"></div>Identificação</div>
     <div class="form-grid">
-      <div class="field">
-        <label>Nome do Cliente *</label>
-        <input type="text" id="f_cliente" placeholder="Clínica / Pet shop...">
-      </div>
-      <div class="field">
-        <label>Data da Solicitação *</label>
-        <input type="date" id="f_data">
-      </div>
-      <div class="field">
-        <label>Vendedor / Promotor *</label>
-        <input type="text" id="f_vendedor" placeholder="Seu nome completo" oninput="checkVerbaVendedor()">
-      </div>
-      <div class="field">
-        <label>Tipo de Ação *</label>
+      <div class="field"><label>Nome do Cliente *</label><input type="text" id="f_cliente" placeholder="Clínica / Pet shop..."></div>
+      <div class="field"><label>Data da Solicitação *</label><input type="date" id="f_data"></div>
+      <div class="field"><label>Vendedor / Promotor *</label><input type="text" id="f_vendedor" placeholder="Seu nome completo" oninput="checkVerbaVendedor()"></div>
+      <div class="field"><label>Tipo de Ação *</label>
         <select id="f_tipo" onchange="checkVerbaDisponivel()">
           <option value="">Selecione...</option>
           <option>Treinamento</option>
@@ -297,31 +239,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title"><div class="dot"></div>Detalhes da Ação</div>
     <div class="form-grid one">
-      <div class="field">
-        <label>Justificativa Estratégica *</label>
-        <textarea id="f_justificativa" placeholder="Por que esta ação é importante? Qual o objetivo?"></textarea>
-      </div>
+      <div class="field"><label>Justificativa Estratégica *</label><textarea id="f_justificativa" placeholder="Por que esta ação é importante? Qual o objetivo?"></textarea></div>
     </div>
     <div class="form-grid" style="margin-top:1rem">
-      <div class="field">
-        <label>Sell In Gerado (R$) *</label>
-        <input type="number" id="f_sellin" placeholder="0">
-      </div>
-      <div class="field">
-        <label>Sell Out Esperado (R$) *</label>
-        <input type="number" id="f_sellout" placeholder="0">
-      </div>
+      <div class="field"><label>Sell In Gerado (R$) *</label><input type="number" id="f_sellin" placeholder="0"></div>
+      <div class="field"><label>Sell Out Esperado (R$) *</label><input type="number" id="f_sellout" placeholder="0"></div>
       <div class="field">
         <label>Valor da Ação / Gasto (R$) *</label>
         <input type="number" id="f_valor" placeholder="0" oninput="checkVerbaDisponivel()">
         <div class="verba-hint" id="verbaHint"></div>
       </div>
-      <div class="field">
-        <label>Sell In está atrelado ao pedido?</label>
+      <div class="field"><label>Sell In está atrelado ao pedido?</label>
         <select id="f_atrelado">
           <option value="">Selecione...</option>
           <option value="sim">✅ Sim — atrelado ao pedido</option>
@@ -329,33 +260,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         </select>
       </div>
     </div>
-    <!-- Verba por vendedor hint -->
     <div id="vendedorVerbaHint" style="display:none;margin-top:.75rem;padding:.6rem .85rem;border-radius:8px;background:rgba(0,168,232,.08);border:1px solid rgba(0,168,232,.2);font-size:.8rem;color:var(--blue)"></div>
   </div>
-
   <div class="card">
     <div class="card-title"><div class="dot"></div>Checklist de Validação</div>
     <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Responda SIM ou NÃO para cada item. Qualquer NÃO impede a aprovação automaticamente.</p>
     <div id="checklistItems"></div>
   </div>
-
-  <!-- Foto / Anexo -->
   <div class="card">
     <div class="card-title"><div class="dot"></div>📎 Anexo (opcional)</div>
-    <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Proposta, orçamento, foto do PDV ou qualquer documento relevante.</p>
-    <div class="field">
-      <label>Arquivo (imagem ou PDF, máx. 5MB)</label>
-      <input type="file" id="f_anexo" accept="image/*,application/pdf" onchange="handleAnexo(this)">
-    </div>
-    <div id="anexoPreview" style="margin-top:.75rem;display:none">
-      <div style="font-size:.78rem;color:var(--green)">✅ Arquivo selecionado: <span id="anexoName"></span></div>
-    </div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Proposta, orçamento ou foto do PDV.</p>
+    <div class="field"><label>Arquivo (imagem ou PDF, máx. 5MB)</label><input type="file" id="f_anexo" accept="image/*,application/pdf" onchange="handleAnexo(this)"></div>
+    <div id="anexoPreview" style="margin-top:.75rem;display:none"><div style="font-size:.78rem;color:var(--green)">✅ Arquivo: <span id="anexoName"></span></div></div>
   </div>
-
   <button class="btn-primary" id="btnSubmit" onclick="submitSolicitacao()">✉️ Enviar Solicitação PNZ</button>
 </div>
 
-<!-- ══ PAGE: CONSULTAR ══ -->
+<!-- PAGE: CONSULTAR -->
 <div class="page" id="page-consultar">
   <div class="page-header">
     <h2>🔍 Consultar Status</h2>
@@ -364,68 +285,53 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="search-box">
     <div class="field" style="flex:2;min-width:200px">
       <label>Protocolo, Vendedor ou Cliente</label>
-      <input type="text" id="searchInput" placeholder="Ex: PNZ-ABC123 ou João Silva..." oninput="renderConsulta()">
+      <input type="text" id="searchInput" placeholder="Ex: PNZ-ABC123 ou João Silva..." oninput="filtrarConsulta()">
     </div>
     <div class="field">
       <label>Status</label>
-      <select id="searchStatus" onchange="renderConsulta()">
+      <select id="searchStatus" onchange="filtrarConsulta()">
         <option value="">Todos</option>
         <option value="pending">⏳ Pendente</option>
         <option value="approved">✅ Aprovado</option>
         <option value="rejected">❌ Reprovado</option>
       </select>
     </div>
-    <div class="field">
-      <label>Período</label>
-      <select id="searchPeriod" onchange="renderConsulta()">
-        <option value="">Todos</option>
-        <option value="7">Últimos 7 dias</option>
-        <option value="30">Últimos 30 dias</option>
-        <option value="90">Últimos 90 dias</option>
-      </select>
-    </div>
+    <button class="btn-secondary" onclick="carregarSolicitacoes(true)" style="height:fit-content">🔄 Atualizar</button>
   </div>
   <div id="consultaList"></div>
 </div>
 
-<!-- ══ PAGE: ADMIN ══ -->
+<!-- PAGE: ADMIN -->
 <div class="page" id="page-admin">
   <div id="adminLock">
     <div class="lock-screen">
       <div class="lock-icon">🔐</div>
       <h3>Área Administrativa</h3>
       <p>Digite a senha para acessar aprovações, verbas e relatórios.</p>
-      <div class="field" style="margin-bottom:1rem">
-        <input type="password" id="adminPass" placeholder="Senha admin" onkeydown="if(event.key==='Enter')checkAdmin()">
-      </div>
+      <div class="field" style="margin-bottom:1rem"><input type="password" id="adminPass" placeholder="Senha admin" onkeydown="if(event.key==='Enter')checkAdmin()"></div>
       <button class="btn-primary" onclick="checkAdmin()">Entrar</button>
     </div>
   </div>
-
   <div id="adminPanel" style="display:none">
     <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem">
-      <div>
-        <h2>⚙️ Painel Administrativo</h2>
-        <p>Aprovações, verbas e relatórios PNZ.</p>
+      <div><h2>⚙️ Painel Administrativo</h2><p>Aprovações, verbas e relatórios PNZ.</p></div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn-secondary" onclick="carregarSolicitacoes(true)" style="height:fit-content">🔄 Atualizar</button>
+        <button class="btn-secondary" onclick="logoutAdmin()" style="height:fit-content">Sair</button>
       </div>
-      <button class="btn-secondary" onclick="logoutAdmin()" style="height:fit-content">Sair</button>
     </div>
-
     <div class="stats-row">
       <div class="stat-card total"><div class="num" id="statTotal">0</div><div class="lbl">Total</div></div>
       <div class="stat-card pend"><div class="num" id="statPend">0</div><div class="lbl">Pendentes</div></div>
       <div class="stat-card appr"><div class="num" id="statAppr">0</div><div class="lbl">Aprovadas</div></div>
       <div class="stat-card reje"><div class="num" id="statReje">0</div><div class="lbl">Reprovadas</div></div>
     </div>
-
-    <!-- Inner tabs -->
     <div class="inner-tabs">
       <button class="inner-tab active" onclick="showInnerTab('tab-aprovacoes',this)">📋 Solicitações</button>
       <button class="inner-tab" onclick="showInnerTab('tab-verbas',this)">💰 Verbas</button>
       <button class="inner-tab" onclick="showInnerTab('tab-relatorio',this)">📊 Relatório</button>
       <button class="inner-tab" onclick="showInnerTab('tab-senha',this)">🔑 Senha</button>
     </div>
-
     <!-- APROVAÇÕES -->
     <div id="tab-aprovacoes">
       <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center">
@@ -442,19 +348,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
       <div id="adminSolList"></div>
     </div>
-
     <!-- VERBAS -->
     <div id="tab-verbas" style="display:none">
       <div class="card">
         <div class="card-title"><div class="dot"></div>💰 Verba por Categoria</div>
         <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Defina o budget disponível para cada tipo de ação.</p>
-        <div id="verbaConfig"></div>
+        <div id="verbaConfig"><div style="color:var(--muted);font-size:.85rem">Carregando...</div></div>
         <button class="btn-primary" style="margin-top:1rem" onclick="saveVerbaConfig()">💾 Salvar Verbas por Categoria</button>
       </div>
       <div class="card">
         <div class="card-title"><div class="dot"></div>👤 Verba por Vendedor</div>
-        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Defina a cota individual de cada vendedor/promotor. Deixe 0 para sem limite individual.</p>
-        <div id="verbaVendedorConfig"></div>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Defina a cota individual de cada vendedor/promotor.</p>
+        <div id="verbaVendedorConfig"><div style="color:var(--muted);font-size:.85rem">Carregando...</div></div>
         <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
           <input type="text" id="newVendedorName" placeholder="Nome do vendedor..." style="flex:1;min-width:180px;padding:.55rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'DM Sans',sans-serif">
           <button class="btn-secondary" onclick="addVendedor()">+ Adicionar</button>
@@ -462,57 +367,34 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         </div>
       </div>
     </div>
-
     <!-- RELATÓRIO -->
     <div id="tab-relatorio" style="display:none">
       <div class="card">
         <div class="card-title"><div class="dot"></div>📊 Exportar Relatório</div>
-        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Exporte todas as solicitações do período como CSV ou imprima o resumo.</p>
         <div class="export-area">
           <div class="export-row">
-            <div class="field">
-              <label>De</label>
-              <input type="date" id="relDe">
-            </div>
-            <div class="field">
-              <label>Até</label>
-              <input type="date" id="relAte">
-            </div>
-            <div class="field">
-              <label>Status</label>
+            <div class="field"><label>De</label><input type="date" id="relDe"></div>
+            <div class="field"><label>Até</label><input type="date" id="relAte"></div>
+            <div class="field"><label>Status</label>
               <select id="relStatus" style="padding:.55rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'DM Sans',sans-serif">
-                <option value="">Todos</option>
-                <option value="pending">Pendente</option>
-                <option value="approved">Aprovado</option>
-                <option value="rejected">Reprovado</option>
+                <option value="">Todos</option><option value="pending">Pendente</option><option value="approved">Aprovado</option><option value="rejected">Reprovado</option>
               </select>
             </div>
           </div>
           <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
             <button class="btn-export" onclick="exportCSV()">⬇️ Exportar CSV</button>
-            <button class="btn-secondary" onclick="printRelatorio()">🖨️ Imprimir Resumo</button>
           </div>
         </div>
         <div id="relSummary" style="margin-top:1.25rem"></div>
       </div>
     </div>
-
     <!-- SENHA -->
     <div id="tab-senha" style="display:none">
       <div class="card" style="max-width:400px">
         <div class="card-title"><div class="dot"></div>🔑 Alterar Senha Admin</div>
-        <div class="field" style="margin-bottom:.75rem">
-          <label>Senha atual</label>
-          <input type="password" id="senhaAtual" placeholder="••••••••">
-        </div>
-        <div class="field" style="margin-bottom:.75rem">
-          <label>Nova senha</label>
-          <input type="password" id="senhaNova" placeholder="••••••••">
-        </div>
-        <div class="field" style="margin-bottom:1rem">
-          <label>Confirmar nova senha</label>
-          <input type="password" id="senhaConfirm" placeholder="••••••••">
-        </div>
+        <div class="field" style="margin-bottom:.75rem"><label>Senha atual</label><input type="password" id="senhaAtual" placeholder="••••••••"></div>
+        <div class="field" style="margin-bottom:.75rem"><label>Nova senha</label><input type="password" id="senhaNova" placeholder="••••••••"></div>
+        <div class="field" style="margin-bottom:1rem"><label>Confirmar nova senha</label><input type="password" id="senhaConfirm" placeholder="••••••••"></div>
         <button class="btn-primary" onclick="alterarSenha()">💾 Salvar Nova Senha</button>
       </div>
     </div>
@@ -522,11 +404,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── STORAGE ───
-async function storeGet(k){try{const r=await window.storage.get(k);return r?JSON.parse(r.value):null}catch(e){return null}}
-async function storeSet(k,v){try{await window.storage.set(k,JSON.stringify(v))}catch(e){}}
+// ═══════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════
+const API_URL = 'https://script.google.com/macros/s/AKfycbxBBIiWDsyArOmPkyxa7LUN08SqXBoDa-KXTneAHHh_iZudFYvHtSJPCgh7dbHa9MiqPw/exec';
 
-// ─── CONSTANTS ───
 const PERGUNTAS = [
   "A ação possui objetivo claro e mensurável?",
   "O cliente tem potencial real de retorno (sell out)?",
@@ -537,6 +419,7 @@ const PERGUNTAS = [
   "Os resultados poderão ser mensurados após a execução?",
   "A ação gera diferencial competitivo real?",
 ];
+
 const VERBA_DEFAULT = [
   {label:"Treinamento",total:5000},
   {label:"Faixada / Material PDV",total:8000},
@@ -546,11 +429,76 @@ const VERBA_DEFAULT = [
   {label:"Desconto Comercial",total:7000},
   {label:"Outros",total:3000},
 ];
+
 let ADMIN_PWD = 'cooper2025';
 let adminLogged = false;
 let anexoData = null;
+let allSolicitacoes = [];
+let allVerbas = VERBA_DEFAULT;
+let allVerbaVendedor = [];
 
-// ─── NAV ───
+// ═══════════════════════════════════════════
+//  API
+// ═══════════════════════════════════════════
+async function apiPost(data) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+async function apiGet(params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  const res = await fetch(API_URL + (qs ? '?' + qs : ''));
+  return res.json();
+}
+
+// ═══════════════════════════════════════════
+//  LOADING
+// ═══════════════════════════════════════════
+function showLoading(msg = 'Aguarde...') {
+  document.getElementById('loadingMsg').textContent = msg;
+  document.getElementById('loadingOverlay').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════
+function fmtBRL(v){return 'R$ '+(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}
+function formatDate(d){if(!d)return '-';try{const[y,m,dd]=String(d).split('-');return`${dd}/${m}/${y}`}catch(e){return d}}
+function formatDateTime(iso){if(!iso)return '-';try{const d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}catch(e){return iso}}
+function matchVerbaCategory(tipo){
+  if(!tipo)return'Outros';
+  if(tipo.includes('Treinamento'))return'Treinamento';
+  if(tipo.includes('Faixada')||tipo.includes('PDV'))return'Faixada / Material PDV';
+  if(tipo.includes('Congresso')||tipo.includes('Evento'))return'Congresso / Evento';
+  if(tipo.includes('Brinde')||tipo.includes('Bonifica'))return'Brinde / Bonificação';
+  if(tipo.includes('Co-marketing'))return'Co-marketing';
+  if(tipo.includes('Desconto'))return'Desconto Comercial';
+  return'Outros';
+}
+
+// ═══════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+type;
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ═══════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+// ═══════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════
 function showPage(id, btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -559,33 +507,38 @@ function showPage(id, btn){
   if(id==='consultar') renderConsulta();
   if(id==='admin') initAdmin();
 }
+
 function showInnerTab(id, btn){
   ['tab-aprovacoes','tab-verbas','tab-relatorio','tab-senha'].forEach(t=>{
-    const el=document.getElementById(t);
-    if(el) el.style.display='none';
+    const el=document.getElementById(t);if(el)el.style.display='none';
   });
   document.querySelectorAll('.inner-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).style.display='block';
   if(btn) btn.classList.add('active');
+  if(id==='tab-verbas') renderVerbaConfig();
   if(id==='tab-relatorio') renderRelatorio();
 }
 
-// ─── TOAST ───
-function toast(msg,type='success'){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast show '+type;
-  setTimeout(()=>t.classList.remove('show'),3500);
+// ═══════════════════════════════════════════
+//  CARREGAR SOLICITAÇÕES (do Sheets)
+// ═══════════════════════════════════════════
+async function carregarSolicitacoes(forceRefresh = false) {
+  try {
+    showLoading('Carregando solicitações...');
+    const data = await apiGet({action:'listar'});
+    allSolicitacoes = data.solicitacoes || [];
+    hideLoading();
+    return allSolicitacoes;
+  } catch(e) {
+    hideLoading();
+    toast('Erro ao carregar dados. Verifique a conexão.','error');
+    return [];
+  }
 }
 
-// ─── MODAL ───
-function closeModal(id){document.getElementById(id).classList.remove('open')}
-
-// ─── FORMAT ───
-function fmtBRL(v){return 'R$ '+(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}
-function formatDate(d){if(!d)return '-';const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`}
-function formatDateTime(iso){if(!iso)return '-';const d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
-
-// ─── CHECKLIST ───
+// ═══════════════════════════════════════════
+//  CHECKLIST
+// ═══════════════════════════════════════════
 function renderChecklist(){
   document.getElementById('checklistItems').innerHTML = PERGUNTAS.map((q,i)=>`
     <div class="checklist-item">
@@ -597,52 +550,44 @@ function renderChecklist(){
     </div>`).join('');
 }
 
-// ─── VERBA CHECK (em tempo real) ───
+// ═══════════════════════════════════════════
+//  VERBA CHECK EM TEMPO REAL
+// ═══════════════════════════════════════════
 async function checkVerbaDisponivel(){
   const tipo = document.getElementById('f_tipo').value;
   const valor = parseFloat(document.getElementById('f_valor').value)||0;
   const hint = document.getElementById('verbaHint');
-  const inp = document.getElementById('f_valor');
   if(!tipo||!valor){hint.className='verba-hint';hint.style.display='none';return}
-  const verbas = await storeGet('pnz:verbas')||VERBA_DEFAULT;
-  const list = await storeGet('pnz:solicitacoes')||[];
   const cat = matchVerbaCategory(tipo);
-  const v = verbas.find(x=>x.label===cat)||{total:0};
-  const used = list.filter(s=>s.status==='approved'&&matchVerbaCategory(s.tipo)===cat).reduce((a,s)=>a+s.valor,0);
+  const v = allVerbas.find(x=>x.label===cat)||{total:0};
+  const used = allSolicitacoes.filter(s=>s.status==='approved'&&matchVerbaCategory(s.tipo)===cat).reduce((a,s)=>a+s.valor,0);
   const avail = v.total - used;
   hint.style.display='block';
-  if(valor<=avail*0.5){
-    hint.className='verba-hint show ok';inp.className='';
-    hint.textContent=`✅ Verba disponível: ${fmtBRL(avail)} em "${cat}"`;
-  }else if(valor<=avail){
-    hint.className='verba-hint show warn';inp.className='field-input warn';
-    hint.textContent=`⚠️ Atenção: restam ${fmtBRL(avail)} em "${cat}". Sua ação usa ${Math.round((valor/avail)*100)}% do saldo.`;
-  }else{
-    hint.className='verba-hint show danger';inp.className='field-input danger';
-    hint.textContent=`❌ Saldo insuficiente! Disponível: ${fmtBRL(avail)} em "${cat}". Valor solicitado: ${fmtBRL(valor)}.`;
-  }
+  if(valor<=avail*0.5){hint.className='verba-hint show ok';hint.textContent=`✅ Verba disponível: ${fmtBRL(avail)} em "${cat}"`;}
+  else if(valor<=avail){hint.className='verba-hint show warn';hint.textContent=`⚠️ Atenção: restam ${fmtBRL(avail)} em "${cat}". Sua ação usa ${Math.round((valor/avail)*100)}% do saldo.`;}
+  else{hint.className='verba-hint show danger';hint.textContent=`❌ Saldo insuficiente! Disponível: ${fmtBRL(avail)}. Solicitado: ${fmtBRL(valor)}.`;}
 }
 
 async function checkVerbaVendedor(){
   const nome = document.getElementById('f_vendedor').value.trim();
   const hint = document.getElementById('vendedorVerbaHint');
   if(!nome){hint.style.display='none';return}
-  const vendedores = await storeGet('pnz:verbas_vendedor')||[];
-  const vend = vendedores.find(v=>v.nome.toLowerCase()===nome.toLowerCase());
+  const vend = allVerbaVendedor.find(v=>v.nome.toLowerCase()===nome.toLowerCase());
   if(!vend||!vend.total){hint.style.display='none';return}
-  const list = await storeGet('pnz:solicitacoes')||[];
-  const used = list.filter(s=>s.status==='approved'&&s.vendedor.toLowerCase()===nome.toLowerCase()).reduce((a,s)=>a+s.valor,0);
+  const used = allSolicitacoes.filter(s=>s.status==='approved'&&s.vendedor.toLowerCase()===nome.toLowerCase()).reduce((a,s)=>a+s.valor,0);
   const avail = vend.total - used;
   hint.style.display='block';
   hint.innerHTML=`👤 Cota de <strong>${nome}</strong>: ${fmtBRL(vend.total)} total · ${fmtBRL(used)} usado · <strong style="color:${avail<0?'var(--red)':'var(--green)'}">${fmtBRL(avail)} disponível</strong>`;
 }
 
-// ─── ANEXO ───
+// ═══════════════════════════════════════════
+//  ANEXO
+// ═══════════════════════════════════════════
 function handleAnexo(input){
-  const file = input.files[0];
+  const file=input.files[0];
   if(!file){anexoData=null;return}
   if(file.size>5*1024*1024){toast('Arquivo muito grande. Máximo 5MB.','error');input.value='';return}
-  const reader = new FileReader();
+  const reader=new FileReader();
   reader.onload=e=>{
     anexoData={name:file.name,type:file.type,data:e.target.result};
     document.getElementById('anexoName').textContent=file.name;
@@ -651,7 +596,9 @@ function handleAnexo(input){
   reader.readAsDataURL(file);
 }
 
-// ─── SUBMIT ───
+// ═══════════════════════════════════════════
+//  SUBMIT
+// ═══════════════════════════════════════════
 async function submitSolicitacao(){
   const get=id=>document.getElementById(id).value.trim();
   const cliente=get('f_cliente'),data=get('f_data'),vendedor=get('f_vendedor'),
@@ -659,7 +606,7 @@ async function submitSolicitacao(){
         sellin=get('f_sellin'),sellout=get('f_sellout'),valor=get('f_valor'),
         atrelado=get('f_atrelado');
   if(!cliente||!data||!vendedor||!tipo||!just||!sellin||!sellout||!valor||!atrelado){
-    toast('Preencha todos os campos obrigatórios.','error');return
+    toast('Preencha todos os campos obrigatórios.','error');return;
   }
   const checklist={};let hasNao=false,allAnswered=true;
   PERGUNTAS.forEach((_,i)=>{
@@ -674,28 +621,27 @@ async function submitSolicitacao(){
     id,cliente,data,vendedor,tipo,justificativa:just,
     sellin:parseFloat(sellin),sellout:parseFloat(sellout),
     valor:parseFloat(valor),atrelado,checklist,hasNao,
-    status:'pending',obs:'',
-    anexo:anexoData||null,
-    history:[{at:new Date().toISOString(),action:'Solicitação criada',by:vendedor}],
     createdAt:new Date().toISOString(),
   };
-  const list=await storeGet('pnz:solicitacoes')||[];
-  list.push(sol);
-  await storeSet('pnz:solicitacoes',list);
 
-  // Show success
-  document.getElementById('successProto').textContent=id;
-  document.getElementById('successModal').classList.add('open');
-  resetForm();
+  showLoading('Enviando solicitação...');
+  try {
+    const res = await apiPost({action:'criar', data:sol});
+    hideLoading();
+    if(res.ok){
+      allSolicitacoes.push({...sol, status:'pending', obs:''});
+      document.getElementById('successProto').textContent=id;
+      document.getElementById('successModal').classList.add('open');
+      resetForm();
+    } else {
+      toast('Erro ao enviar: '+(res.erro||'Tente novamente.'),'error');
+    }
+  } catch(e) {
+    hideLoading();
+    toast('Erro de conexão. Verifique sua internet.','error');
+  }
 }
 
-let lastProto='';
-function copyProto(){
-  const p=document.getElementById('successProto').textContent;
-  lastProto=p;
-  navigator.clipboard.writeText(p).catch(()=>{});
-  toast('📋 Protocolo copiado!','info');
-}
 function resetForm(){
   ['f_cliente','f_data','f_vendedor','f_justificativa','f_sellin','f_sellout','f_valor'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f_tipo').value='';
@@ -710,42 +656,46 @@ function resetForm(){
   anexoData=null;
 }
 
-// ─── CONSULTAR ───
+function copyProto(){
+  const p=document.getElementById('successProto').textContent;
+  navigator.clipboard.writeText(p).catch(()=>{});
+  toast('📋 Protocolo copiado!','info');
+}
+
+// ═══════════════════════════════════════════
+//  CONSULTAR
+// ═══════════════════════════════════════════
 async function renderConsulta(){
-  const list=await storeGet('pnz:solicitacoes')||[];
+  if(!allSolicitacoes.length) await carregarSolicitacoes();
+  filtrarConsulta();
+}
+
+function filtrarConsulta(){
   const q=document.getElementById('searchInput').value.toLowerCase();
   const st=document.getElementById('searchStatus').value;
-  const period=parseInt(document.getElementById('searchPeriod').value)||0;
-  const now=Date.now();
-  const filtered=list.filter(s=>{
+  const filtered=[...allSolicitacoes].filter(s=>{
     const match=!q||s.vendedor.toLowerCase().includes(q)||s.cliente.toLowerCase().includes(q)||s.id.toLowerCase().includes(q);
     const statusMatch=!st||s.status===st;
-    const dateMatch=!period||(now-new Date(s.createdAt).getTime())<period*86400000;
-    return match&&statusMatch&&dateMatch;
+    return match&&statusMatch;
   }).reverse();
   const el=document.getElementById('consultaList');
   if(!filtered.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhuma solicitação encontrada.</p></div>`;return}
   el.innerHTML=filtered.map(s=>renderSolCard(s,false)).join('');
 }
 
-// ─── SOL CARD ───
+// ═══════════════════════════════════════════
+//  SOL CARD
+// ═══════════════════════════════════════════
 function renderSolCard(s,isAdmin){
   const statusLabel={pending:'⏳ Aguardando Análise',approved:'✅ Aprovado',rejected:'❌ Reprovado'};
   const badgeClass={pending:'badge-pending',approved:'badge-approved',rejected:'badge-rejected'};
   const hasNaoWarn=s.hasNao?`<div style="color:var(--red);font-size:.75rem;margin-top:.3rem">⚠️ Possui NÃO no checklist</div>`:'';
-  const obsHtml=s.obs?`<div class="sol-obs ${s.status}-obs"><strong>📌 Obs do gestor:</strong> ${s.obs}</div>`:'';
-  const anexoHtml=s.anexo?`<div style="margin-top:.5rem"><a href="${s.anexo.data}" download="${s.anexo.name}" style="font-size:.78rem;color:var(--cyan);text-decoration:underline">📎 ${s.anexo.name}</a></div>`:'';
-
-  const historyHtml=(s.history||[]).map(h=>`
-    <div class="history-item">
-      <span class="h-time">${formatDateTime(h.at)}</span>
-      <span class="h-action">${h.action} <span class="h-by">— ${h.by||'Sistema'}</span></span>
-    </div>`).join('');
+  const obsHtml=s.obs?`<div class="sol-obs ${s.status}"><strong>📌 Obs do gestor:</strong> ${s.obs}</div>`:'';
 
   const adminActions=isAdmin?`
     <div style="margin-top:.75rem">
       <div class="obs-field">
-        <div style="font-size:.75rem;color:var(--muted);margin-bottom:.3rem;font-weight:600">OBSERVAÇÃO / MOTIVO ${s.status!=='approved'?'<span class="obs-required" id="obsReq_'+s.id+'" style="display:inline">*obrigatório ao reprovar</span>':''}</div>
+        <div style="font-size:.75rem;color:var(--muted);margin-bottom:.3rem;font-weight:600">OBSERVAÇÃO / MOTIVO${s.status!=='approved'?' <span style="color:var(--red)">*obrigatório ao reprovar</span>':''}</div>
         <textarea id="obs_${s.id}" placeholder="Descreva o motivo da decisão...">${s.obs||''}</textarea>
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
@@ -775,23 +725,18 @@ function renderSolCard(s,isAdmin){
     <span class="sol-expand" onclick="toggleDetail('${s.id}')">▼ Ver detalhes</span>
     <div class="sol-detail" id="detail_${s.id}">
       <div class="detail-grid">
-        <div class="detail-item"><span>Justificativa</span><strong>${s.justificativa}</strong></div>
+        <div class="detail-item"><span>Justificativa</span><strong>${s.justificativa||'-'}</strong></div>
         <div class="detail-item"><span>Sell In atrelado?</span><strong>${s.atrelado==='sim'?'✅ Sim':'⚠️ Apenas expectativa'}</strong></div>
-        <div class="detail-item"><span>Criado em</span><strong>${formatDateTime(s.createdAt)}</strong></div>
       </div>
-      ${anexoHtml}
       <div style="margin-top:.75rem;font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem">Checklist</div>
       <div class="checklist-mini">
         ${PERGUNTAS.map((q,i)=>`
           <div class="check-mini">
-            <div class="dot-s ${s.checklist[i]||'nao'}"></div>
+            <div class="dot-s ${s.checklist&&s.checklist[i]?s.checklist[i]:'nao'}"></div>
             <span title="${q}">${q.length>50?q.substring(0,48)+'…':q}</span>
           </div>`).join('')}
       </div>
       ${adminActions}
-      ${(s.history||[]).length>1?`
-        <div style="margin-top:.75rem;font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.3rem">Histórico</div>
-        <div class="history-log">${historyHtml}</div>`:''}
     </div>
   </div>`;
 }
@@ -803,8 +748,12 @@ function toggleDetail(id){
   exp.textContent=d.classList.contains('open')?'▲ Fechar detalhes':'▼ Ver detalhes';
 }
 
-// ─── ADMIN ───
-async function getAdminPwd(){return await storeGet('pnz:adminpwd')||ADMIN_PWD}
+// ═══════════════════════════════════════════
+//  ADMIN
+// ═══════════════════════════════════════════
+async function getAdminPwd(){
+  try{const r=await window.storage.get('pnz:adminpwd');return r?JSON.parse(r.value):ADMIN_PWD}catch(e){return ADMIN_PWD}
+}
 function checkAdmin(){
   const p=document.getElementById('adminPass').value;
   getAdminPwd().then(pwd=>{
@@ -812,7 +761,7 @@ function checkAdmin(){
       adminLogged=true;
       document.getElementById('adminLock').style.display='none';
       document.getElementById('adminPanel').style.display='block';
-      renderAdmin();
+      initAdmin();
     }else toast('Senha incorreta.','error');
   });
 }
@@ -822,27 +771,38 @@ function logoutAdmin(){
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('adminPass').value='';
 }
-function initAdmin(){if(adminLogged)renderAdmin()}
+async function initAdmin(){
+  if(!adminLogged) return;
+  await carregarSolicitacoes(true);
+  await carregarVerbas();
+  renderAdmin();
+}
 
-async function renderAdmin(){
-  const list=await storeGet('pnz:solicitacoes')||[];
-  document.getElementById('statTotal').textContent=list.length;
-  document.getElementById('statPend').textContent=list.filter(s=>s.status==='pending').length;
-  document.getElementById('statAppr').textContent=list.filter(s=>s.status==='approved').length;
-  document.getElementById('statReje').textContent=list.filter(s=>s.status==='rejected').length;
+async function carregarVerbas(){
+  try{
+    const r=await apiGet({action:'verbas'});
+    if(r.verbas) allVerbas=r.verbas;
+    const r2=await apiGet({action:'verbaVendedor'});
+    if(r2.vendedores) allVerbaVendedor=r2.vendedores;
+  }catch(e){}
+}
 
-  // Populate vendedor filter
-  const vendedores=[...new Set(list.map(s=>s.vendedor))].sort();
+function renderAdmin(){
+  document.getElementById('statTotal').textContent=allSolicitacoes.length;
+  document.getElementById('statPend').textContent=allSolicitacoes.filter(s=>s.status==='pending').length;
+  document.getElementById('statAppr').textContent=allSolicitacoes.filter(s=>s.status==='approved').length;
+  document.getElementById('statReje').textContent=allSolicitacoes.filter(s=>s.status==='rejected').length;
+
+  const vendedores=[...new Set(allSolicitacoes.map(s=>s.vendedor))].sort();
   const vSel=document.getElementById('adminFilterVendedor');
   const curV=vSel.value;
   vSel.innerHTML='<option value="">Todos vendedores</option>'+vendedores.map(v=>`<option value="${v}">${v}</option>`).join('');
   vSel.value=curV;
 
-  // Filter
   const q=(document.getElementById('adminSearch').value||'').toLowerCase();
   const st=document.getElementById('adminFilterStatus').value;
   const vf=document.getElementById('adminFilterVendedor').value;
-  const sorted=[...list].sort((a,b)=>{
+  const sorted=[...allSolicitacoes].sort((a,b)=>{
     const o={pending:0,rejected:1,approved:2};
     return o[a.status]-o[b.status]||new Date(b.createdAt)-new Date(a.createdAt);
   }).filter(s=>{
@@ -855,16 +815,34 @@ async function renderAdmin(){
   const el=document.getElementById('adminSolList');
   if(!sorted.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhuma solicitação encontrada.</p></div>`;return}
   el.innerHTML=sorted.map(s=>renderSolCard(s,true)).join('');
-
-  // Verbas config
-  await renderVerbaConfig();
 }
 
-async function renderVerbaConfig(){
-  const verbas=await storeGet('pnz:verbas')||VERBA_DEFAULT;
-  const list=await storeGet('pnz:solicitacoes')||[];
-  document.getElementById('verbaConfig').innerHTML=verbas.map((v,i)=>{
-    const used=list.filter(s=>s.status==='approved'&&matchVerbaCategory(s.tipo)===v.label).reduce((a,s)=>a+s.valor,0);
+// ═══════════════════════════════════════════
+//  UPDATE STATUS
+// ═══════════════════════════════════════════
+async function updateStatus(id,newStatus){
+  const obs=document.getElementById('obs_'+id)?.value||'';
+  if(newStatus==='rejected'&&!obs.trim()){toast('⚠️ Informe o motivo da reprovação.','error');return}
+  showLoading('Salvando...');
+  try{
+    const res=await apiPost({action:'atualizar',id,status:newStatus,obs,by:'Gestor'});
+    hideLoading();
+    if(res.ok){
+      const idx=allSolicitacoes.findIndex(s=>s.id===id);
+      if(idx!==-1){allSolicitacoes[idx].status=newStatus;allSolicitacoes[idx].obs=obs;}
+      const labels={approved:'✅ Aprovado com sucesso',rejected:'❌ Reprovado',pending:'↩ Retornado para análise'};
+      toast(labels[newStatus]);
+      renderAdmin();
+    }else toast('Erro ao atualizar: '+(res.erro||''),'error');
+  }catch(e){hideLoading();toast('Erro de conexão.','error')}
+}
+
+// ═══════════════════════════════════════════
+//  VERBAS CONFIG
+// ═══════════════════════════════════════════
+function renderVerbaConfig(){
+  document.getElementById('verbaConfig').innerHTML=allVerbas.map((v,i)=>{
+    const used=allSolicitacoes.filter(s=>s.status==='approved'&&matchVerbaCategory(s.tipo)===v.label).reduce((a,s)=>a+s.valor,0);
     const avail=v.total-used;
     return`<div class="verba-edit-row">
       <label>${v.label}<br><small style="color:${avail<0?'var(--red)':'var(--green)'}">Usado: ${fmtBRL(used)} · Disponível: ${fmtBRL(avail)}</small></label>
@@ -872,82 +850,63 @@ async function renderVerbaConfig(){
     </div>`;
   }).join('');
 
-  // Verba por vendedor
-  const vvList=await storeGet('pnz:verbas_vendedor')||[];
-  document.getElementById('verbaVendedorConfig').innerHTML=vvList.length?vvList.map((v,i)=>{
-    const used=list.filter(s=>s.status==='approved'&&s.vendedor.toLowerCase()===v.nome.toLowerCase()).reduce((a,s)=>a+s.valor,0);
+  document.getElementById('verbaVendedorConfig').innerHTML=allVerbaVendedor.length?allVerbaVendedor.map((v,i)=>{
+    const used=allSolicitacoes.filter(s=>s.status==='approved'&&s.vendedor.toLowerCase()===v.nome.toLowerCase()).reduce((a,s)=>a+s.valor,0);
     const avail=v.total-used;
     return`<div class="vend-verba-row">
       <div class="vv-name"><strong>${v.nome}</strong></div>
-      <div class="vv-used">Usado: ${fmtBRL(used)}</div>
-      <div class="vv-avail" style="color:${avail<0?'var(--red)':'var(--green)'}">Disp: ${fmtBRL(avail)}</div>
-      <input type="number" id="vv_${i}" value="${v.total}" min="0" style="width:120px">
+      <div style="font-size:.75rem;color:var(--amber)">Usado: ${fmtBRL(used)}</div>
+      <div style="font-size:.75rem;color:${avail<0?'var(--red)':'var(--green)'}">Disp: ${fmtBRL(avail)}</div>
+      <input type="number" id="vv_${i}" value="${v.total}" min="0">
       <button class="btn-danger" onclick="removeVendedor(${i})" style="padding:.3rem .6rem">✕</button>
     </div>`;
   }).join(''):`<p style="font-size:.82rem;color:var(--muted)">Nenhum vendedor cadastrado ainda.</p>`;
 }
 
+async function saveVerbaConfig(){
+  allVerbas.forEach((v,i)=>{const inp=document.getElementById('verba_'+i);if(inp)v.total=parseFloat(inp.value)||0});
+  showLoading('Salvando verbas...');
+  try{
+    await apiPost({action:'salvarVerbas',verbas:allVerbas});
+    hideLoading();toast('💾 Verbas por categoria salvas!');
+  }catch(e){hideLoading();toast('Erro ao salvar.','error')}
+}
+
 async function addVendedor(){
   const nome=document.getElementById('newVendedorName').value.trim();
   if(!nome){toast('Digite o nome do vendedor.','error');return}
-  const vv=await storeGet('pnz:verbas_vendedor')||[];
-  if(vv.find(v=>v.nome.toLowerCase()===nome.toLowerCase())){toast('Vendedor já cadastrado.','error');return}
-  vv.push({nome,total:0});
-  await storeSet('pnz:verbas_vendedor',vv);
+  if(allVerbaVendedor.find(v=>v.nome.toLowerCase()===nome.toLowerCase())){toast('Vendedor já cadastrado.','error');return}
+  allVerbaVendedor.push({nome,total:0});
   document.getElementById('newVendedorName').value='';
-  renderVerbaConfig();toast('Vendedor adicionado.','success');
+  renderVerbaConfig();toast('Vendedor adicionado.');
 }
 async function removeVendedor(i){
-  const vv=await storeGet('pnz:verbas_vendedor')||[];
-  vv.splice(i,1);
-  await storeSet('pnz:verbas_vendedor',vv);
+  allVerbaVendedor.splice(i,1);
   renderVerbaConfig();toast('Vendedor removido.','info');
 }
 async function saveVerbaVendedor(){
-  const vv=await storeGet('pnz:verbas_vendedor')||[];
-  vv.forEach((_,i)=>{const inp=document.getElementById('vv_'+i);if(inp)vv[i].total=parseFloat(inp.value)||0});
-  await storeSet('pnz:verbas_vendedor',vv);
-  toast('💾 Verbas por vendedor salvas!');
-}
-async function saveVerbaConfig(){
-  const verbas=await storeGet('pnz:verbas')||VERBA_DEFAULT;
-  verbas.forEach((v,i)=>{const inp=document.getElementById('verba_'+i);if(inp)v.total=parseFloat(inp.value)||0});
-  await storeSet('pnz:verbas',verbas);
-  toast('💾 Verbas por categoria salvas!');
+  allVerbaVendedor.forEach((_,i)=>{const inp=document.getElementById('vv_'+i);if(inp)allVerbaVendedor[i].total=parseFloat(inp.value)||0});
+  showLoading('Salvando...');
+  try{
+    await apiPost({action:'salvarVerbaVendedor',vendedores:allVerbaVendedor});
+    hideLoading();toast('💾 Verbas por vendedor salvas!');
+  }catch(e){hideLoading();toast('Erro ao salvar.','error')}
 }
 
-// ─── UPDATE STATUS ───
-async function updateStatus(id,newStatus){
-  const list=await storeGet('pnz:solicitacoes')||[];
-  const obs=document.getElementById('obs_'+id)?.value||'';
-  if(newStatus==='rejected'&&!obs.trim()){
-    toast('⚠️ Informe o motivo da reprovação.','error');
-    document.getElementById('obs_'+id)?.focus();return;
-  }
-  const idx=list.findIndex(s=>s.id===id);if(idx===-1)return;
-  const adminName='Gestor';
-  const actionMap={approved:'Aprovado',rejected:'Reprovado',pending:'Retornado para análise'};
-  list[idx].status=newStatus;
-  list[idx].obs=obs;
-  list[idx].history=list[idx].history||[];
-  list[idx].history.push({at:new Date().toISOString(),action:actionMap[newStatus]+(obs?`: "${obs}"`:''),by:adminName});
-  await storeSet('pnz:solicitacoes',list);
-  const labels={approved:'✅ Aprovado com sucesso',rejected:'❌ Reprovado',pending:'↩ Retornado para análise'};
-  toast(labels[newStatus]);
-  renderAdmin();
-}
-
-// ─── VERBA MODAL ───
+// ═══════════════════════════════════════════
+//  VERBA MODAL
+// ═══════════════════════════════════════════
 async function openVerbaModal(){
   document.getElementById('verbaModal').classList.add('open');
-  const verbas=await storeGet('pnz:verbas')||VERBA_DEFAULT;
-  const list=await storeGet('pnz:solicitacoes')||[];
+  document.getElementById('verbaDisplay').innerHTML='<div style="text-align:center;padding:1rem;color:var(--muted)">Carregando...</div>';
+  if(!allSolicitacoes.length) await carregarSolicitacoes();
+  if(!allVerbas.length) await carregarVerbas();
   const usedMap={};
-  list.filter(s=>s.status==='approved').forEach(s=>{
+  allSolicitacoes.filter(s=>s.status==='approved').forEach(s=>{
     const cat=matchVerbaCategory(s.tipo);
     usedMap[cat]=(usedMap[cat]||0)+s.valor;
   });
-  document.getElementById('verbaDisplay').innerHTML=verbas.map(v=>{
+  document.getElementById('verbaDisplay').innerHTML=allVerbas.map(v=>{
     const used=usedMap[v.label]||0;
     const avail=v.total-used;
     const pct=v.total>0?Math.min(100,Math.round((used/v.total)*100)):0;
@@ -964,92 +923,85 @@ async function openVerbaModal(){
   }).join('');
 }
 
-// ─── CATEGORIA ───
-function matchVerbaCategory(tipo){
-  if(!tipo)return'Outros';
-  if(tipo.includes('Treinamento'))return'Treinamento';
-  if(tipo.includes('Faixada')||tipo.includes('PDV'))return'Faixada / Material PDV';
-  if(tipo.includes('Congresso')||tipo.includes('Evento'))return'Congresso / Evento';
-  if(tipo.includes('Brinde')||tipo.includes('Bonifica'))return'Brinde / Bonificação';
-  if(tipo.includes('Co-marketing'))return'Co-marketing';
-  if(tipo.includes('Desconto'))return'Desconto Comercial';
-  return'Outros';
-}
-
-// ─── RELATÓRIO ───
-async function renderRelatorio(){
-  const list=await storeGet('pnz:solicitacoes')||[];
+// ═══════════════════════════════════════════
+//  RELATÓRIO
+// ═══════════════════════════════════════════
+function renderRelatorio(){
   const de=document.getElementById('relDe').value;
   const ate=document.getElementById('relAte').value;
   const st=document.getElementById('relStatus').value;
-  const filtered=list.filter(s=>{
+  const filtered=allSolicitacoes.filter(s=>{
     const d=new Date(s.createdAt);
-    const deOk=!de||d>=new Date(de);
-    const ateOk=!ate||d<=new Date(ate+'T23:59:59');
-    const stOk=!st||s.status===st;
-    return deOk&&ateOk&&stOk;
+    return(!de||d>=new Date(de))&&(!ate||d<=new Date(ate+'T23:59:59'))&&(!st||s.status===st);
   });
-  const totalValor=filtered.reduce((a,s)=>a+s.valor,0);
   const totalAprov=filtered.filter(s=>s.status==='approved').reduce((a,s)=>a+s.valor,0);
+  const totalSolic=filtered.reduce((a,s)=>a+s.valor,0);
   document.getElementById('relSummary').innerHTML=`
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem">
       <div class="stat-card total"><div class="num">${filtered.length}</div><div class="lbl">Solicitações</div></div>
-      <div class="stat-card appr"><div class="num" style="font-size:1.1rem">${fmtBRL(totalAprov)}</div><div class="lbl">Aprovado</div></div>
-      <div class="stat-card pend"><div class="num" style="font-size:1.1rem">${fmtBRL(totalValor)}</div><div class="lbl">Total solicitado</div></div>
+      <div class="stat-card appr"><div class="num" style="font-size:1rem">${fmtBRL(totalAprov)}</div><div class="lbl">Aprovado</div></div>
+      <div class="stat-card pend"><div class="num" style="font-size:1rem">${fmtBRL(totalSolic)}</div><div class="lbl">Total solicitado</div></div>
     </div>`;
 }
 
 async function exportCSV(){
-  const list=await storeGet('pnz:solicitacoes')||[];
   const de=document.getElementById('relDe').value;
   const ate=document.getElementById('relAte').value;
   const st=document.getElementById('relStatus').value;
-  const filtered=list.filter(s=>{
+  const filtered=allSolicitacoes.filter(s=>{
     const d=new Date(s.createdAt);
     return(!de||d>=new Date(de))&&(!ate||d<=new Date(ate+'T23:59:59'))&&(!st||s.status===st);
   });
-  const header='Protocolo,Data,Vendedor,Cliente,Tipo,Valor,Sell In,Sell Out,Status,Observação,Criado em';
+  const header='Protocolo,Data,Vendedor,Cliente,Tipo,Valor,Sell In,Sell Out,Status,Observação';
   const rows=filtered.map(s=>[
     s.id,s.data,`"${s.vendedor}"`,`"${s.cliente}"`,`"${s.tipo}"`,
     s.valor,s.sellin,s.sellout,
     s.status==='approved'?'Aprovado':s.status==='rejected'?'Reprovado':'Pendente',
-    `"${(s.obs||'').replace(/"/g,"'")}"`,
-    formatDateTime(s.createdAt)
+    `"${(s.obs||'').replace(/"/g,"'")}"`
   ].join(','));
   const csv=[header,...rows].join('\n');
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;
-  a.download=`PNZ_Relatorio_${new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')}.csv`;
+  a.download=`PNZ_${new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')}.csv`;
   a.click();URL.revokeObjectURL(url);
   toast('📊 CSV exportado!','success');
 }
 
-function printRelatorio(){window.print()}
-
-// ─── ALTERAR SENHA ───
+// ═══════════════════════════════════════════
+//  ALTERAR SENHA
+// ═══════════════════════════════════════════
 async function alterarSenha(){
   const atual=document.getElementById('senhaAtual').value;
   const nova=document.getElementById('senhaNova').value;
   const conf=document.getElementById('senhaConfirm').value;
   const pwd=await getAdminPwd();
   if(atual!==pwd){toast('Senha atual incorreta.','error');return}
-  if(nova.length<4){toast('Nova senha muito curta (mín. 4 caracteres).','error');return}
+  if(nova.length<4){toast('Nova senha muito curta.','error');return}
   if(nova!==conf){toast('Confirmação não confere.','error');return}
-  await storeSet('pnz:adminpwd',nova);
+  try{await window.storage.set('pnz:adminpwd',JSON.stringify(nova));}catch(e){}
   ADMIN_PWD=nova;
   ['senhaAtual','senhaNova','senhaConfirm'].forEach(id=>document.getElementById(id).value='');
-  toast('🔑 Senha alterada com sucesso!','success');
+  toast('🔑 Senha alterada com sucesso!');
 }
 
-// ─── INIT ───
-document.addEventListener('DOMContentLoaded',()=>{
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',async()=>{
   renderChecklist();
   document.getElementById('f_data').value=new Date().toISOString().split('T')[0];
   const today=new Date().toISOString().split('T')[0];
   const month=new Date();month.setDate(1);
   document.getElementById('relDe').value=month.toISOString().split('T')[0];
   document.getElementById('relAte').value=today;
+  // Pré-carrega dados em background
+  try{
+    const r=await apiGet({action:'verbas'});
+    if(r.verbas) allVerbas=r.verbas;
+    const r2=await apiGet({action:'verbaVendedor'});
+    if(r2.vendedores) allVerbaVendedor=r2.vendedores;
+  }catch(e){}
 });
 </script>
 </body>
