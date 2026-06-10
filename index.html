@@ -223,7 +223,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="form-grid">
       <div class="field"><label>Nome do Cliente *</label><input type="text" id="f_cliente" placeholder="Clínica / Pet shop..."></div>
       <div class="field"><label>Data da Solicitação *</label><input type="date" id="f_data"></div>
-      <div class="field"><label>Vendedor / Promotor *</label><input type="text" id="f_vendedor" placeholder="Seu nome completo" oninput="checkVerbaVendedor()"></div>
+      <div class="field">
+        <label>Vendedor / Promotor *</label>
+        <select id="f_vendedor" onchange="checkVerbaVendedor()">
+          <option value="">Selecione seu nome...</option>
+        </select>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:.2rem">Seu nome não está na lista? Peça ao admin para cadastrá-lo.</div>
+      </div>
       <div class="field"><label>Tipo de Ação *</label>
         <select id="f_tipo" onchange="checkVerbaDisponivel()">
           <option value="">Selecione...</option>
@@ -280,25 +286,42 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <div class="page" id="page-consultar">
   <div class="page-header">
     <h2>🔍 Consultar Status</h2>
-    <p>Busque pelo número de protocolo, seu nome ou cliente.</p>
+    <p>Digite seu nome para ver suas solicitações.</p>
   </div>
-  <div class="search-box">
-    <div class="field" style="flex:2;min-width:200px">
-      <label>Protocolo, Vendedor ou Cliente</label>
-      <input type="text" id="searchInput" placeholder="Ex: PNZ-ABC123 ou João Silva..." oninput="filtrarConsulta()">
-    </div>
-    <div class="field">
-      <label>Status</label>
-      <select id="searchStatus" onchange="filtrarConsulta()">
-        <option value="">Todos</option>
-        <option value="pending">⏳ Pendente</option>
-        <option value="approved">✅ Aprovado</option>
-        <option value="rejected">❌ Reprovado</option>
+
+  <!-- Identificação do vendedor -->
+  <div id="consultaLogin" class="card" style="max-width:440px;margin:0 auto">
+    <div class="card-title"><div class="dot"></div>👤 Identificação</div>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Digite seu nome exatamente como usou na solicitação.</p>
+    <div class="field" style="margin-bottom:1rem">
+      <label>Seu nome</label>
+      <select id="consultaNome">
+        <option value="">Selecione seu nome...</option>
       </select>
     </div>
-    <button class="btn-secondary" onclick="carregarSolicitacoes(true)" style="height:fit-content">🔄 Atualizar</button>
+    <button class="btn-primary" onclick="entrarConsulta()">🔍 Ver minhas solicitações</button>
   </div>
-  <div id="consultaList"></div>
+
+  <!-- Resultados -->
+  <div id="consultaResultados" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem">
+      <div>
+        <span style="font-size:.85rem;color:var(--muted)">Mostrando solicitações de </span>
+        <strong id="consultaNomeAtivo" style="color:var(--navy)"></strong>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <select id="searchStatus" onchange="filtrarConsulta()" style="padding:.45rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;font-family:'DM Sans',sans-serif">
+          <option value="">Todos status</option>
+          <option value="pending">⏳ Pendente</option>
+          <option value="approved">✅ Aprovado</option>
+          <option value="rejected">❌ Reprovado</option>
+        </select>
+        <button class="btn-secondary" onclick="carregarSolicitacoes(true).then(filtrarConsulta)" style="font-size:.82rem;padding:.45rem .9rem">🔄 Atualizar</button>
+        <button class="btn-secondary" onclick="sairConsulta()" style="font-size:.82rem;padding:.45rem .9rem">↩ Sair</button>
+      </div>
+    </div>
+    <div id="consultaList"></div>
+  </div>
 </div>
 
 <!-- PAGE: ADMIN -->
@@ -568,7 +591,7 @@ async function checkVerbaDisponivel(){
 }
 
 async function checkVerbaVendedor(){
-  const nome = document.getElementById('f_vendedor').value.trim();
+  const nome = document.getElementById('f_vendedor').value;
   const hint = document.getElementById('vendedorVerbaHint');
   if(!nome){hint.style.display='none';return}
   const vend = allVerbaVendedor.find(v=>v.nome.toLowerCase()===nome.toLowerCase());
@@ -664,21 +687,45 @@ function copyProto(){
 // ═══════════════════════════════════════════
 //  CONSULTAR
 // ═══════════════════════════════════════════
+let consultaVendedorAtivo = '';
+
 async function renderConsulta(){
-  if(!allSolicitacoes.length) await carregarSolicitacoes();
+  // Só mostra login, não carrega dados ainda
+  document.getElementById('consultaLogin').style.display='block';
+  document.getElementById('consultaResultados').style.display='none';
+}
+
+async function entrarConsulta(){
+  const nome = document.getElementById('consultaNome').value.trim();
+  if(!nome){ toast('Digite seu nome para continuar.','error'); return; }
+  consultaVendedorAtivo = nome;
+  document.getElementById('consultaNomeAtivo').textContent = nome;
+  document.getElementById('consultaLogin').style.display='none';
+  document.getElementById('consultaResultados').style.display='block';
+  await carregarSolicitacoes(true);
   filtrarConsulta();
 }
 
+function sairConsulta(){
+  consultaVendedorAtivo='';
+  document.getElementById('consultaNome').value='';
+  document.getElementById('consultaLogin').style.display='block';
+  document.getElementById('consultaResultados').style.display='none';
+}
+
 function filtrarConsulta(){
-  const q=document.getElementById('searchInput').value.toLowerCase();
   const st=document.getElementById('searchStatus').value;
+  // Filtra APENAS pelo vendedor logado
   const filtered=[...allSolicitacoes].filter(s=>{
-    const match=!q||s.vendedor.toLowerCase().includes(q)||s.cliente.toLowerCase().includes(q)||s.id.toLowerCase().includes(q);
+    const vendedorMatch=s.vendedor.toLowerCase()===consultaVendedorAtivo.toLowerCase();
     const statusMatch=!st||s.status===st;
-    return match&&statusMatch;
+    return vendedorMatch&&statusMatch;
   }).reverse();
   const el=document.getElementById('consultaList');
-  if(!filtered.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhuma solicitação encontrada.</p></div>`;return}
+  if(!filtered.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhuma solicitação encontrada para <strong>${consultaVendedorAtivo}</strong>.</p></div>`;
+    return;
+  }
   el.innerHTML=filtered.map(s=>renderSolCard(s,false)).join('');
 }
 
@@ -1017,9 +1064,20 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const r=await apiGet({action:'verbas'});
     if(r.verbas) allVerbas=r.verbas;
     const r2=await apiGet({action:'verbaVendedor'});
-    if(r2.vendedores) allVerbaVendedor=r2.vendedores;
+    if(r2.vendedores){
+      allVerbaVendedor=r2.vendedores;
+      popularDropdownVendedores();
+    }
   }catch(e){}
 });
+
+function popularDropdownVendedores(){
+  const opts = allVerbaVendedor.map(v=>`<option value="${v.nome}">${v.nome}</option>`).join('');
+  const sel1 = document.getElementById('f_vendedor');
+  const sel2 = document.getElementById('consultaNome');
+  if(sel1) sel1.innerHTML = '<option value="">Selecione seu nome...</option>' + opts;
+  if(sel2) sel2.innerHTML = '<option value="">Selecione seu nome...</option>' + opts;
+}
 </script>
 </body>
 </html>
