@@ -697,10 +697,11 @@ function renderSolCard(s,isAdmin){
         <div style="font-size:.75rem;color:var(--muted);margin-bottom:.3rem;font-weight:600">OBSERVAÇÃO / MOTIVO${s.status!=='approved'?' <span style="color:var(--red)">*obrigatório ao reprovar</span>':''}</div>
         <textarea id="obs_${s.id}" placeholder="Descreva o motivo da decisão...">${s.obs||''}</textarea>
       </div>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
         ${s.status!=='approved'?`<button class="btn-approve" onclick="updateStatus('${s.id}','approved')">✅ Aprovar</button>`:''}
         ${s.status!=='rejected'?`<button class="btn-danger" onclick="updateStatus('${s.id}','rejected')">❌ Reprovar</button>`:''}
         ${s.status!=='pending'?`<button class="btn-secondary" style="padding:.45rem .9rem;font-size:.78rem" onclick="updateStatus('${s.id}','pending')">↩ Voltar p/ análise</button>`:''}
+        <button style="margin-left:auto;background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;padding:.3rem .5rem" onclick="excluirSolicitacao('${s.id}')" title="Excluir solicitação">🗑️ Excluir</button>
       </div>
     </div>`:obsHtml;
 
@@ -833,6 +834,23 @@ async function updateStatus(id,newStatus){
       toast(labels[newStatus]);
       renderAdmin();
     }else toast('Erro ao atualizar: '+(res.erro||''),'error');
+  }catch(e){hideLoading();toast('Erro de conexão.','error')}
+}
+
+// ═══════════════════════════════════════════
+//  EXCLUIR
+// ═══════════════════════════════════════════
+async function excluirSolicitacao(id){
+  if(!confirm('Tem certeza que deseja excluir esta solicitação? Esta ação não pode ser desfeita.')) return;
+  showLoading('Excluindo...');
+  try{
+    const res=await apiPost({action:'excluir',id});
+    hideLoading();
+    if(res.ok){
+      allSolicitacoes=allSolicitacoes.filter(s=>s.id!==id);
+      toast('🗑️ Solicitação excluída.','info');
+      renderAdmin();
+    }else toast('Erro ao excluir: '+(res.erro||''),'error');
   }catch(e){hideLoading();toast('Erro de conexão.','error')}
 }
 
