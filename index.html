@@ -334,6 +334,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <span>📝 Rascunho carregado automaticamente. Seus dados foram preservados!</span>
     <button onclick="limparRascunho()" style="background:none;border:none;color:#92610a;text-decoration:underline;cursor:pointer;font-size:.78rem">Limpar rascunho</button>
   </div>
+  <input type="hidden" id="f_editando_id" value="">
   <button class="btn-primary" id="btnSubmit" onclick="submitSolicitacao()">✉️ Enviar Solicitação PNZ</button>
 </div>
 
@@ -456,7 +457,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
       <div class="card">
         <div class="card-title"><div class="dot"></div>👤 Verba por Vendedor</div>
-        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Defina a cota individual de cada vendedor/promotor.</p>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Defina a cota e o PIN de acesso de cada vendedor. O PIN padrão é <strong>1234</strong>.</p>
+        <div style="display:flex;gap:.5rem;font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;padding:0 .2rem">
+          <div style="flex:1">Nome</div>
+          <div style="width:80px;text-align:center">Usado</div>
+          <div style="width:80px;text-align:center">Disp.</div>
+          <div style="width:80px;text-align:center">Cota R$</div>
+          <div style="width:70px;text-align:center">PIN 🔐</div>
+          <div style="width:32px"></div>
+        </div>
         <div id="verbaVendedorConfig"><div style="color:var(--muted);font-size:.85rem">Carregando...</div></div>
         <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
           <input type="text" id="newVendedorName" placeholder="Nome do vendedor..." style="flex:1;min-width:180px;padding:.55rem .8rem;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'DM Sans',sans-serif">
@@ -843,21 +852,43 @@ async function submitSolicitacao(){
     createdAt:new Date().toISOString(),
   };
 
-  showLoading('Enviando solicitação...');
-  try {
-    const res = await apiPost({action:'criar', data:sol});
-    hideLoading();
-    if(res.ok){
-      allSolicitacoes.push({...sol, status:'pending', obs:''});
-      document.getElementById('successProto').textContent=id;
-      document.getElementById('successModal').classList.add('open');
-      resetForm();
-    } else {
-      toast('Erro ao enviar: '+(res.erro||'Tente novamente.'),'error');
+  const editandoId = document.getElementById('f_editando_id').value;
+  
+  if(editandoId){
+    // MODO COMPLEMENTO — atualiza solicitação existente
+    showLoading('Enviando complemento...');
+    try{
+      // Atualiza status de volta para pending com dados novos
+      const res = await apiPost({action:'complementar', id:editandoId, data:sol});
+      hideLoading();
+      if(res.ok){
+        const idx = allSolicitacoes.findIndex(s=>s.id===editandoId);
+        if(idx!==-1) allSolicitacoes[idx] = {...allSolicitacoes[idx], ...sol, status:'pending', obs:''};
+        document.getElementById('successProto').textContent = editandoId;
+        document.getElementById('successModal').classList.add('open');
+        resetForm();
+      } else {
+        toast('Erro ao enviar complemento: '+(res.erro||''),'error');
+      }
+    }catch(e){hideLoading();toast('Erro de conexão.','error')}
+  } else {
+    // MODO NORMAL — cria nova solicitação
+    showLoading('Enviando solicitação...');
+    try {
+      const res = await apiPost({action:'criar', data:sol});
+      hideLoading();
+      if(res.ok){
+        allSolicitacoes.push({...sol, status:'pending', obs:''});
+        document.getElementById('successProto').textContent=id;
+        document.getElementById('successModal').classList.add('open');
+        resetForm();
+      } else {
+        toast('Erro ao enviar: '+(res.erro||'Tente novamente.'),'error');
+      }
+    } catch(e) {
+      hideLoading();
+      toast('Erro de conexão. Verifique sua internet.','error');
     }
-  } catch(e) {
-    hideLoading();
-    toast('Erro de conexão. Verifique sua internet.','error');
   }
 }
 
@@ -876,6 +907,9 @@ function resetForm(){
   document.getElementById('f_obs').value='';
   anexoData=null;
   limparRascunho();
+  document.getElementById('f_editando_id').value='';
+  document.getElementById('btnSubmit').textContent='✉️ Enviar Solicitação PNZ';
+  document.getElementById('btnSubmit').style.background='';
 }
 
 function copyProto(){
@@ -896,12 +930,26 @@ async function renderConsulta(){
 }
 
 async function entrarConsulta(){
-  const nome = document.getElementById('consultaNome').value.trim();
-  if(!nome){ toast('Digite seu nome para continuar.','error'); return; }
+  const nome = document.getElementById('consultaNome').value;
+  const pin = document.getElementById('consultaPin').value.trim();
+  if(!nome){ toast('Selecione seu nome.','error'); return; }
+  if(!pin){ toast('Digite seu PIN de acesso.','error'); return; }
+
+  // Verifica PIN
+  const vend = allVerbaVendedor.find(v=>v.nome===nome);
+  const pinCadastrado = vend && vend.pin ? String(vend.pin) : '1234'; // PIN padrão 1234
+  if(pin !== pinCadastrado){
+    toast('PIN incorreto. Tente novamente.','error');
+    document.getElementById('consultaPin').value='';
+    document.getElementById('consultaPin').focus();
+    return;
+  }
+
   consultaVendedorAtivo = nome;
   document.getElementById('consultaNomeAtivo').textContent = nome;
   document.getElementById('consultaLogin').style.display='none';
   document.getElementById('consultaResultados').style.display='block';
+  document.getElementById('consultaPin').value='';
   await carregarSolicitacoes(true);
   filtrarConsulta();
 }
@@ -909,6 +957,7 @@ async function entrarConsulta(){
 function sairConsulta(){
   consultaVendedorAtivo='';
   document.getElementById('consultaNome').value='';
+  document.getElementById('consultaPin').value='';
   document.getElementById('consultaLogin').style.display='block';
   document.getElementById('consultaResultados').style.display='none';
 }
@@ -1231,6 +1280,11 @@ function editarSolicitacao(id){
       <button onclick="document.getElementById('rascunhoAviso').style.display='none'" style="background:none;border:none;color:#92610a;text-decoration:underline;cursor:pointer;font-size:.78rem">Fechar aviso</button>
     `;
 
+    // Marca que está editando
+    document.getElementById('f_editando_id').value = id;
+    document.getElementById('btnSubmit').textContent = '🔄 Enviar Complemento';
+    document.getElementById('btnSubmit').style.background = 'linear-gradient(135deg,#5B21B6,#7C3AED)';
+
     // Scroll para o topo
     window.scrollTo({top:0, behavior:'smooth'});
   }, 300);
@@ -1325,7 +1379,12 @@ async function removeVendedor(i){
   renderVerbaConfig();toast('Vendedor removido.','info');
 }
 async function saveVerbaVendedor(){
-  allVerbaVendedor.forEach((_,i)=>{const inp=document.getElementById('vv_'+i);if(inp)allVerbaVendedor[i].total=parseFloat(inp.value)||0});
+  allVerbaVendedor.forEach((_,i)=>{
+    const inp=document.getElementById('vv_'+i);
+    const pinInp=document.getElementById('vv_pin_'+i);
+    if(inp) allVerbaVendedor[i].total=parseFloat(inp.value)||0;
+    if(pinInp&&pinInp.value.trim()) allVerbaVendedor[i].pin=pinInp.value.trim();
+  });
   showLoading('Salvando...');
   try{
     await apiPost({action:'salvarVerbaVendedor',vendedores:allVerbaVendedor});
