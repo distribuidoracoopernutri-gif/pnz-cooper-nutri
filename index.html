@@ -1334,12 +1334,19 @@ function renderVerbaConfig(){
   document.getElementById('verbaVendedorConfig').innerHTML=allVerbaVendedor.length?allVerbaVendedor.map((v,i)=>{
     const used=allSolicitacoes.filter(s=>s.status==='approved'&&s.vendedor.toLowerCase()===v.nome.toLowerCase()).reduce((a,s)=>a+s.valor,0);
     const avail=v.total-used;
-    return`<div class="vend-verba-row">
-      <div class="vv-name"><strong>${v.nome}</strong></div>
-      <div style="font-size:.75rem;color:var(--amber)">Usado: ${fmtBRL(used)}</div>
-      <div style="font-size:.75rem;color:${avail<0?'var(--red)':'var(--green)'}">Disp: ${fmtBRL(avail)}</div>
-      <input type="number" id="vv_${i}" value="${v.total}" min="0">
-      <button class="btn-danger" onclick="removeVendedor(${i})" style="padding:.3rem .6rem">✕</button>
+    return`<div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.75rem;padding:.6rem .75rem;background:var(--bg);border-radius:8px;flex-wrap:wrap">
+      <div style="flex:1;min-width:100px;font-size:.88rem;font-weight:600;color:var(--navy)">${v.nome}</div>
+      <div style="font-size:.75rem;color:var(--amber);white-space:nowrap">Usado: ${fmtBRL(used)}</div>
+      <div style="font-size:.75rem;color:${avail<0?'var(--red)':'var(--green)'};white-space:nowrap">Disp: ${fmtBRL(avail)}</div>
+      <div style="display:flex;flex-direction:column;gap:.15rem;align-items:center">
+        <span style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Cota R$</span>
+        <input type="number" id="vv_${i}" value="${v.total}" min="0" style="width:90px;padding:.4rem .5rem;border:1.5px solid var(--border);border-radius:6px;font-size:.85rem;font-family:'DM Sans',sans-serif;text-align:center">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.15rem;align-items:center">
+        <span style="font-size:.65rem;color:var(--cyan);text-transform:uppercase;letter-spacing:.5px;font-weight:700">PIN 🔐</span>
+        <input type="text" id="vv_pin_${i}" value="${v.pin||'1234'}" maxlength="6" placeholder="PIN" style="width:70px;padding:.4rem .5rem;border:1.5px solid var(--cyan);border-radius:6px;font-size:.9rem;font-family:'DM Sans',sans-serif;text-align:center;letter-spacing:3px;font-weight:700">
+      </div>
+      <button class="btn-danger" onclick="removeVendedor(${i})" style="padding:.4rem .65rem">✕</button>
     </div>`;
   }).join(''):`<p style="font-size:.82rem;color:var(--muted)">Nenhum vendedor cadastrado ainda.</p>`;
 }
