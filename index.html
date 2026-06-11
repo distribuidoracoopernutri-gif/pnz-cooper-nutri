@@ -78,12 +78,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .badge-pending{background:rgba(255,179,0,.15);color:var(--amber);border:1px solid var(--amber)}
 .badge-approved{background:rgba(0,200,83,.15);color:var(--green);border:1px solid var(--green)}
 .badge-rejected{background:rgba(229,57,53,.15);color:var(--red);border:1px solid var(--red)}
+.badge-complement{background:rgba(124,58,237,.15);color:var(--purple);border:1px solid var(--purple)}
 .protocol-box{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .proto-big{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);letter-spacing:3px;background:var(--bg);border:2px dashed var(--cyan);border-radius:12px;padding:.75rem 2rem;display:inline-block;margin-bottom:1.5rem}
 .sol-card{background:var(--card);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:.85rem;box-shadow:var(--shadow);border-left:4px solid var(--border);transition:all .2s}
 .sol-card.pending{border-left-color:var(--amber)}
 .sol-card.approved{border-left-color:var(--green)}
 .sol-card.rejected{border-left-color:var(--red)}
+.sol-card.complement{border-left-color:var(--purple)}
 .sol-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;gap:.75rem}
 .sol-title{font-family:'Sora',sans-serif;font-weight:700;font-size:.92rem;color:var(--navy)}
 .sol-sub{font-size:.78rem;color:var(--muted);margin-top:.2rem}
@@ -203,7 +205,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <h3>Solicitação enviada!</h3>
       <p>Guarde seu número de protocolo para acompanhar o status:</p>
       <div class="proto-big" id="successProto">-</div>
-      <p style="margin-bottom:1rem;font-size:.8rem;color:var(--muted)">Use este número na aba <strong>Consultar</strong> para verificar aprovação.</p>
+      <div style="background:rgba(0,168,232,.08);border:1.5px solid rgba(0,168,232,.25);border-radius:10px;padding:.85rem 1.25rem;margin-bottom:1.25rem;text-align:left">
+        <div style="font-size:.82rem;color:var(--navy);font-weight:700;margin-bottom:.4rem">📋 O que acontece agora?</div>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.7">
+          ⏱️ Prazo de análise: <strong style="color:var(--navy)">até 30 dias úteis</strong><br>
+          📩 Você será notificado pelo sistema quando houver resposta<br>
+          🔍 Acompanhe na aba <strong>Consultar</strong> a qualquer momento
+        </div>
+      </div>
       <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
         <button class="btn-secondary" onclick="copyProto()">📋 Copiar protocolo</button>
         <button class="btn-primary" style="width:auto;padding:.7rem 1.5rem" onclick="closeModal('successModal');showPage('consultar',document.getElementById('tab-consultar'))">🔍 Ver status</button>
@@ -221,7 +230,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="card">
     <div class="card-title"><div class="dot"></div>Identificação</div>
     <div class="form-grid">
-      <div class="field"><label>Nome do Cliente *</label><input type="text" id="f_cliente" placeholder="Clínica / Pet shop..."></div>
+      <div class="field"><label>Nome do Cliente *</label><input type="text" id="f_cliente" placeholder="Clínica / Pet shop..." oninput="salvarRascunho()"></div>
       <div class="field"><label>Data da Solicitação *</label><input type="date" id="f_data"></div>
       <div class="field">
         <label>Vendedor / Promotor *</label>
@@ -248,11 +257,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="card">
     <div class="card-title"><div class="dot"></div>Detalhes da Ação</div>
     <div class="form-grid one">
-      <div class="field"><label>Justificativa Estratégica *</label><textarea id="f_justificativa" placeholder="Por que esta ação é importante? Qual o objetivo?"></textarea></div>
+      <div class="field"><label>Justificativa Estratégica *</label><textarea id="f_justificativa" placeholder="Por que esta ação é importante? Qual o objetivo?" oninput="salvarRascunho()"></textarea></div>
     </div>
     <div class="form-grid" style="margin-top:1rem">
-      <div class="field"><label>Sell In Gerado (R$) *</label><input type="number" id="f_sellin" placeholder="0"></div>
-      <div class="field"><label>Sell Out Esperado (R$) *</label><input type="number" id="f_sellout" placeholder="0"></div>
+      <div class="field"><label>Sell In Gerado (R$) *</label><input type="number" id="f_sellin" placeholder="0" oninput="salvarRascunho()"></div>
+      <div class="field"><label>Sell Out Esperado (R$) *</label><input type="number" id="f_sellout" placeholder="0" oninput="salvarRascunho()"></div>
       <div class="field">
         <label>Valor da Ação / Gasto (R$) *</label>
         <input type="number" id="f_valor" placeholder="0" oninput="checkVerbaDisponivel()">
@@ -269,15 +278,61 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div id="vendedorVerbaHint" style="display:none;margin-top:.75rem;padding:.6rem .85rem;border-radius:8px;background:rgba(0,168,232,.08);border:1px solid rgba(0,168,232,.2);font-size:.8rem;color:var(--blue)"></div>
   </div>
   <div class="card">
-    <div class="card-title"><div class="dot"></div>Checklist de Validação</div>
-    <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Responda SIM ou NÃO para cada item. Qualquer NÃO impede a aprovação automaticamente.</p>
-    <div id="checklistItems"></div>
+    <div class="card-title"><div class="dot"></div>✅ Requisitos da Solicitação</div>
+    <div id="checklistSimples">
+      <div style="background:rgba(0,168,232,.07);border:1.5px solid rgba(0,168,232,.25);border-radius:10px;padding:1rem 1.25rem;margin-bottom:.75rem">
+        <div style="font-size:.88rem;color:var(--navy);font-weight:600;margin-bottom:.5rem">Antes de enviar, confirmo que:</div>
+        <ul style="padding-left:1.2rem;font-size:.85rem;color:var(--muted);line-height:1.9">
+          <li>A ação possui objetivo claro e mensurável</li>
+          <li>O cliente tem potencial real de retorno</li>
+          <li>A solicitação está sendo feita com no mínimo 30 dias de antecedência</li>
+          <li>O cliente está engajado com a marca Zoetis</li>
+          <li>A ação foi alinhada com a supervisão/gerência</li>
+          <li>A nota fiscal será emitida no CNPJ da Cooper Nutri</li>
+          <li>Os resultados poderão ser mensurados após a execução</li>
+          <li>A ação gera diferencial competitivo real</li>
+        </ul>
+      </div>
+      <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.75rem 1rem;background:var(--bg);border-radius:10px;border:1.5px solid var(--border);transition:all .2s" id="checklistConfirmLabel">
+        <input type="checkbox" id="checklistConfirm" onchange="toggleChecklistDetalhe(this)" style="width:20px;height:20px;cursor:pointer;accent-color:var(--cyan);flex-shrink:0">
+        <span style="font-size:.9rem;font-weight:600;color:var(--navy)">Declaro que li e atendo todos os requisitos acima</span>
+      </label>
+      <div style="margin-top:.5rem">
+        <span onclick="toggleChecklistCompleto()" style="font-size:.75rem;color:var(--cyan);cursor:pointer;text-decoration:underline">▼ Quero responder item por item</span>
+      </div>
+    </div>
+    <div id="checklistCompleto" style="display:none;margin-top:.75rem">
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Responda SIM ou NÃO para cada item.</p>
+      <div id="checklistItems"></div>
+      <div style="margin-top:.5rem">
+        <span onclick="toggleChecklistCompleto()" style="font-size:.75rem;color:var(--cyan);cursor:pointer;text-decoration:underline">▲ Usar modo simplificado</span>
+      </div>
+    </div>
   </div>
   <div class="card">
     <div class="card-title"><div class="dot"></div>📎 Anexo (opcional)</div>
     <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Proposta, orçamento ou foto do PDV.</p>
-    <div class="field"><label>Arquivo (imagem ou PDF, máx. 5MB)</label><input type="file" id="f_anexo" accept="image/*,application/pdf" onchange="handleAnexo(this)"></div>
-    <div id="anexoPreview" style="margin-top:.75rem;display:none"><div style="font-size:.78rem;color:var(--green)">✅ Arquivo: <span id="anexoName"></span></div></div>
+    <div class="field">
+      <label>Arquivos (imagens ou PDF, máx. 5MB cada)</label>
+      <input type="file" id="f_anexo" accept="image/*,application/pdf" multiple onchange="handleAnexo(this)">
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem">Selecione um ou mais arquivos. Segure Ctrl para selecionar vários.</div>
+    </div>
+    <div id="anexoPreview" style="margin-top:.75rem;display:none">
+      <div style="font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:.4rem">Arquivos selecionados:</div>
+      <div id="anexoList" style="display:flex;flex-direction:column;gap:.3rem"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><div class="dot"></div>💬 Observações (opcional)</div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Informações adicionais, contexto ou detalhes que ajudem na análise da solicitação.</p>
+    <div class="field">
+      <label>Observação</label>
+      <textarea id="f_obs" placeholder="Ex: Cliente acabou de abrir nova unidade" oninput="salvarRascunho(), ação prevista para o mês que vem..." style="min-height:100px"></textarea>
+    </div>
+  </div>
+  <div id="rascunhoAviso" style="display:none;background:rgba(255,179,0,.12);border:1px solid var(--amber);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;font-size:.82rem;color:#92610a;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap">
+    <span>📝 Rascunho carregado automaticamente. Seus dados foram preservados!</span>
+    <button onclick="limparRascunho()" style="background:none;border:none;color:#92610a;text-decoration:underline;cursor:pointer;font-size:.78rem">Limpar rascunho</button>
   </div>
   <button class="btn-primary" id="btnSubmit" onclick="submitSolicitacao()">✉️ Enviar Solicitação PNZ</button>
 </div>
@@ -306,7 +361,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div id="consultaResultados" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.75rem">
       <div>
-        <span style="font-size:.85rem;color:var(--muted)">Mostrando solicitações de </span>
+        <span style="font-size:.85rem;color:var(--muted)">Solicitações de </span>
         <strong id="consultaNomeAtivo" style="color:var(--navy)"></strong>
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
@@ -320,6 +375,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <button class="btn-secondary" onclick="sairConsulta()" style="font-size:.82rem;padding:.45rem .9rem">↩ Sair</button>
       </div>
     </div>
+    <!-- Cota do vendedor -->
+    <div id="consultaCota" style="display:none;margin-bottom:1.25rem"></div>
+    <!-- Resumo visual -->
+    <div id="consultaResumo" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem"></div>
     <div id="consultaList"></div>
   </div>
 </div>
@@ -351,8 +410,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <div class="inner-tabs">
       <button class="inner-tab active" onclick="showInnerTab('tab-aprovacoes',this)">📋 Solicitações</button>
+      <button class="inner-tab" onclick="showInnerTab('tab-dashboard',this)">📊 Dashboard</button>
       <button class="inner-tab" onclick="showInnerTab('tab-verbas',this)">💰 Verbas</button>
-      <button class="inner-tab" onclick="showInnerTab('tab-relatorio',this)">📊 Relatório</button>
+      <button class="inner-tab" onclick="showInnerTab('tab-relatorio',this)">📈 Relatório</button>
       <button class="inner-tab" onclick="showInnerTab('tab-senha',this)">🔑 Senha</button>
     </div>
     <!-- APROVAÇÕES -->
@@ -362,6 +422,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <select id="adminFilterStatus" onchange="renderAdmin()" style="padding:.5rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:'DM Sans',sans-serif">
           <option value="">Todos status</option>
           <option value="pending">⏳ Pendentes</option>
+          <option value="complement">🔄 Complemento</option>
           <option value="approved">✅ Aprovados</option>
           <option value="rejected">❌ Reprovados</option>
         </select>
@@ -369,8 +430,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
           <option value="">Todos vendedores</option>
         </select>
       </div>
+      <!-- Ações em lote -->
+      <div id="loteBar" style="display:none;background:var(--navy);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:none;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+        <span style="color:#fff;font-size:.85rem;font-family:'Sora',sans-serif;font-weight:600"><span id="loteCount">0</span> selecionadas</span>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn-approve" onclick="aprovarLote()">✅ Aprovar todas</button>
+          <button class="btn-danger" onclick="reprovarLote()">❌ Reprovar todas</button>
+          <button onclick="limparSelecao()" style="background:rgba(255,255,255,.15);border:none;color:#fff;padding:.4rem .8rem;border-radius:6px;cursor:pointer;font-size:.78rem">✕ Cancelar</button>
+        </div>
+      </div>
       <div id="adminSolList"></div>
     </div>
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard" style="display:none">
+      <div id="dashboardContent"></div>
+    </div>
+
     <!-- VERBAS -->
     <div id="tab-verbas" style="display:none">
       <div class="card">
@@ -413,12 +488,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <!-- SENHA -->
     <div id="tab-senha" style="display:none">
-      <div class="card" style="max-width:400px">
+      <div class="card" style="max-width:400px;margin-bottom:1.5rem">
         <div class="card-title"><div class="dot"></div>🔑 Alterar Senha Admin</div>
         <div class="field" style="margin-bottom:.75rem"><label>Senha atual</label><input type="password" id="senhaAtual" placeholder="••••••••"></div>
         <div class="field" style="margin-bottom:.75rem"><label>Nova senha</label><input type="password" id="senhaNova" placeholder="••••••••"></div>
         <div class="field" style="margin-bottom:1rem"><label>Confirmar nova senha</label><input type="password" id="senhaConfirm" placeholder="••••••••"></div>
         <button class="btn-primary" onclick="alterarSenha()">💾 Salvar Nova Senha</button>
+      </div>
+      <div class="card" style="max-width:400px">
+        <div class="card-title"><div class="dot"></div>📧 Notificação por E-mail</div>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Configure o e-mail que receberá notificações quando chegar nova solicitação. A configuração é feita no Apps Script.</p>
+        <div style="background:var(--bg);border-radius:8px;padding:1rem;font-size:.82rem;color:var(--text)">
+          <div style="font-weight:600;margin-bottom:.5rem;color:var(--navy)">Como ativar:</div>
+          <ol style="padding-left:1.2rem;line-height:1.8">
+            <li>Abre o Apps Script da planilha</li>
+            <li>Encontra a linha <code style="background:var(--border);padding:.1rem .3rem;border-radius:3px">const EMAIL_NOTIF</code></li>
+            <li>Substitui pelo seu e-mail</li>
+            <li>Reimplanta como nova versão</li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>
@@ -531,7 +619,7 @@ function showPage(id, btn){
 }
 
 function showInnerTab(id, btn){
-  ['tab-aprovacoes','tab-verbas','tab-relatorio','tab-senha'].forEach(t=>{
+  ['tab-aprovacoes','tab-dashboard','tab-verbas','tab-relatorio','tab-senha'].forEach(t=>{
     const el=document.getElementById(t);if(el)el.style.display='none';
   });
   document.querySelectorAll('.inner-tab').forEach(t=>t.classList.remove('active'));
@@ -539,6 +627,7 @@ function showInnerTab(id, btn){
   if(btn) btn.classList.add('active');
   if(id==='tab-verbas') renderVerbaConfig();
   if(id==='tab-relatorio') renderRelatorio();
+  if(id==='tab-dashboard') renderDashboard();
 }
 
 // ═══════════════════════════════════════════
@@ -561,15 +650,85 @@ async function carregarSolicitacoes(forceRefresh = false) {
 // ═══════════════════════════════════════════
 //  CHECKLIST
 // ═══════════════════════════════════════════
+function toggleChecklistDetalhe(cb){
+  const label = document.getElementById('checklistConfirmLabel');
+  if(cb.checked){
+    label.style.borderColor='var(--cyan)';
+    label.style.background='rgba(0,168,232,.07)';
+  } else {
+    label.style.borderColor='var(--border)';
+    label.style.background='var(--bg)';
+  }
+}
+
+function toggleChecklistCompleto(){
+  const completo = document.getElementById('checklistCompleto');
+  const simples = document.getElementById('checklistSimples');
+  const isOpen = completo.style.display !== 'none';
+  completo.style.display = isOpen ? 'none' : 'block';
+  simples.style.display = isOpen ? 'block' : 'none';
+}
+
 function renderChecklist(){
   document.getElementById('checklistItems').innerHTML = PERGUNTAS.map((q,i)=>`
     <div class="checklist-item">
       <div class="q"><strong>${i+1}.</strong> ${q}</div>
       <div class="radio-pair">
-        <label class="radio-sim"><input type="radio" name="chk${i}" value="sim"> SIM</label>
-        <label class="radio-nao"><input type="radio" name="chk${i}" value="nao"> NÃO</label>
+        <label class="radio-sim"><input type="radio" name="chk${i}" value="sim" onchange="salvarRascunho()"> SIM</label>
+        <label class="radio-nao"><input type="radio" name="chk${i}" value="nao" onchange="salvarRascunho()"> NÃO</label>
       </div>
     </div>`).join('');
+  carregarRascunho();
+}
+
+function salvarRascunho(){
+  const dados = {
+    cliente: document.getElementById('f_cliente').value,
+    data: document.getElementById('f_data').value,
+    vendedor: document.getElementById('f_vendedor').value,
+    tipo: document.getElementById('f_tipo').value,
+    justificativa: document.getElementById('f_justificativa').value,
+    sellin: document.getElementById('f_sellin').value,
+    sellout: document.getElementById('f_sellout').value,
+    valor: document.getElementById('f_valor').value,
+    atrelado: document.getElementById('f_atrelado').value,
+    obs: document.getElementById('f_obs').value,
+  };
+  PERGUNTAS.forEach((_,i)=>{
+    const v=document.querySelector(`input[name=chk${i}]:checked`);
+    if(v) dados['chk'+i]=v.value;
+  });
+  try{ localStorage.setItem('pnz_rascunho', JSON.stringify(dados)); }catch(e){}
+}
+
+function carregarRascunho(){
+  try{
+    const raw = localStorage.getItem('pnz_rascunho');
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    if(d.cliente) document.getElementById('f_cliente').value=d.cliente;
+    if(d.data) document.getElementById('f_data').value=d.data;
+    if(d.vendedor) document.getElementById('f_vendedor').value=d.vendedor;
+    if(d.tipo) document.getElementById('f_tipo').value=d.tipo;
+    if(d.justificativa) document.getElementById('f_justificativa').value=d.justificativa;
+    if(d.sellin) document.getElementById('f_sellin').value=d.sellin;
+    if(d.sellout) document.getElementById('f_sellout').value=d.sellout;
+    if(d.valor) document.getElementById('f_valor').value=d.valor;
+    if(d.atrelado) document.getElementById('f_atrelado').value=d.atrelado;
+    if(d.obs) document.getElementById('f_obs').value=d.obs;
+    PERGUNTAS.forEach((_,i)=>{
+      if(d['chk'+i]){
+        const r=document.querySelector(`input[name=chk${i}][value="${d['chk'+i]}"]`);
+        if(r) r.checked=true;
+      }
+    });
+    document.getElementById('rascunhoAviso').style.display='flex';
+  }catch(e){}
+}
+
+function limparRascunho(){
+  try{ localStorage.removeItem('pnz_rascunho'); }catch(e){}
+  document.getElementById('rascunhoAviso').style.display='none';
 }
 
 // ═══════════════════════════════════════════
@@ -606,16 +765,38 @@ async function checkVerbaVendedor(){
 //  ANEXO
 // ═══════════════════════════════════════════
 function handleAnexo(input){
-  const file=input.files[0];
-  if(!file){anexoData=null;return}
-  if(file.size>5*1024*1024){toast('Arquivo muito grande. Máximo 5MB.','error');input.value='';return}
-  const reader=new FileReader();
-  reader.onload=e=>{
-    anexoData={name:file.name,type:file.type,data:e.target.result};
-    document.getElementById('anexoName').textContent=file.name;
-    document.getElementById('anexoPreview').style.display='block';
-  };
-  reader.readAsDataURL(file);
+  const files = Array.from(input.files);
+  if(!files.length){anexoData=null;return}
+
+  // Valida tamanho
+  const grandes = files.filter(f=>f.size>5*1024*1024);
+  if(grandes.length){
+    toast(`Arquivo(s) muito grande(s): ${grandes.map(f=>f.name).join(', ')}. Máx. 5MB cada.`,'error');
+    input.value='';return;
+  }
+
+  // Lê todos em base64
+  anexoData = [];
+  let lidos = 0;
+  const preview = document.getElementById('anexoPreview');
+  const list = document.getElementById('anexoList');
+  list.innerHTML = '';
+  preview.style.display = 'block';
+
+  files.forEach((file, idx) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      anexoData[idx] = {name:file.name, type:file.type, data:e.target.result};
+      lidos++;
+      // Adiciona item na lista
+      const item = document.createElement('div');
+      item.style.cssText='display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--green);background:rgba(0,200,83,.07);padding:.3rem .6rem;border-radius:6px';
+      item.innerHTML=`<span>📎</span><span>${file.name}</span><span style="color:var(--muted);font-size:.7rem">(${(file.size/1024).toFixed(0)}KB)</span>`;
+      list.appendChild(item);
+      if(lidos===files.length) toast(`✅ ${files.length} arquivo(s) selecionado(s).`,'success');
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 // ═══════════════════════════════════════════
@@ -630,19 +811,35 @@ async function submitSolicitacao(){
   if(!cliente||!data||!vendedor||!tipo||!just||!sellin||!sellout||!valor||!atrelado){
     toast('Preencha todos os campos obrigatórios.','error');return;
   }
+  // Verifica se está no modo simplificado ou detalhado
+  const modoSimples = document.getElementById('checklistCompleto').style.display === 'none';
   const checklist={};let hasNao=false,allAnswered=true;
-  PERGUNTAS.forEach((_,i)=>{
-    const v=document.querySelector(`input[name=chk${i}]:checked`);
-    if(!v) allAnswered=false;
-    else{checklist[i]=v.value;if(v.value==='nao')hasNao=true}
-  });
-  if(!allAnswered){toast('Responda todos os itens do checklist.','error');return}
+
+  if(modoSimples){
+    const confirmado = document.getElementById('checklistConfirm').checked;
+    if(!confirmado){
+      toast('Confirme que atende todos os requisitos antes de enviar.','error');
+      document.getElementById('checklistConfirmLabel').style.borderColor='var(--red)';
+      return;
+    }
+    // Preenche todos como SIM
+    PERGUNTAS.forEach((_,i)=>{ checklist[i]='sim'; });
+  } else {
+    PERGUNTAS.forEach((_,i)=>{
+      const v=document.querySelector(`input[name=chk${i}]:checked`);
+      if(!v) allAnswered=false;
+      else{checklist[i]=v.value;if(v.value==='nao')hasNao=true}
+    });
+    if(!allAnswered){toast('Responda todos os itens do checklist.','error');return}
+  }
 
   const id='PNZ-'+Date.now().toString(36).toUpperCase().slice(-6);
+  const obsVendedor = document.getElementById('f_obs').value.trim();
   const sol={
     id,cliente,data,vendedor,tipo,justificativa:just,
     sellin:parseFloat(sellin),sellout:parseFloat(sellout),
     valor:parseFloat(valor),atrelado,checklist,hasNao,
+    obsVendedor,
     createdAt:new Date().toISOString(),
   };
 
@@ -674,8 +871,11 @@ function resetForm(){
   document.getElementById('verbaHint').style.display='none';
   document.getElementById('vendedorVerbaHint').style.display='none';
   document.getElementById('anexoPreview').style.display='none';
+  document.getElementById('anexoList').innerHTML='';
   document.getElementById('f_anexo').value='';
+  document.getElementById('f_obs').value='';
   anexoData=null;
+  limparRascunho();
 }
 
 function copyProto(){
@@ -715,15 +915,54 @@ function sairConsulta(){
 
 function filtrarConsulta(){
   const st=document.getElementById('searchStatus').value;
-  // Filtra APENAS pelo vendedor logado
-  const filtered=[...allSolicitacoes].filter(s=>{
-    const vendedorMatch=s.vendedor.toLowerCase()===consultaVendedorAtivo.toLowerCase();
-    const statusMatch=!st||s.status===st;
-    return vendedorMatch&&statusMatch;
-  }).reverse();
+  const minhas=[...allSolicitacoes].filter(s=>s.vendedor.toLowerCase()===consultaVendedorAtivo.toLowerCase());
+  const filtered=minhas.filter(s=>!st||s.status===st).reverse();
+
+  // Cota do vendedor
+  const vend = allVerbaVendedor.find(v=>v.nome.toLowerCase()===consultaVendedorAtivo.toLowerCase());
+  const cotaEl = document.getElementById('consultaCota');
+  if(vend && vend.total>0){
+    const usado = minhas.filter(s=>s.status==='approved').reduce((a,s)=>a+s.valor,0);
+    const disp = vend.total - usado;
+    const pct = Math.min(100,Math.round((usado/vend.total)*100));
+    const cor = disp<0?'var(--red)':disp<vend.total*.2?'var(--amber)':'var(--green)';
+    cotaEl.style.display='block';
+    cotaEl.innerHTML=`
+      <div style="background:var(--card);border-radius:12px;padding:1.1rem 1.25rem;box-shadow:var(--shadow)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;flex-wrap:wrap;gap:.5rem">
+          <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:.9rem;color:var(--navy)">💰 Sua cota PNZ</div>
+          <div style="font-size:.82rem;color:${cor};font-weight:700">${fmtBRL(disp)} disponível</div>
+        </div>
+        <div style="height:10px;background:var(--border);border-radius:5px;margin-bottom:.4rem">
+          <div style="height:10px;border-radius:5px;background:${cor};width:${pct}%;transition:width .4s"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)">
+          <span>Usado: ${fmtBRL(usado)}</span>
+          <span>Total: ${fmtBRL(vend.total)}</span>
+        </div>
+      </div>`;
+  } else {
+    cotaEl.style.display='none';
+  }
+
+  // Resumo visual
+  const aprov=minhas.filter(s=>s.status==='approved').length;
+  const pend=minhas.filter(s=>s.status==='pending').length;
+  const repr=minhas.filter(s=>s.status==='rejected').length;
+  document.getElementById('consultaResumo').innerHTML=`
+    <div class="stat-card appr" style="padding:.85rem;cursor:pointer" onclick="document.getElementById('searchStatus').value='approved';filtrarConsulta()">
+      <div class="num" style="font-size:1.4rem">${aprov}</div><div class="lbl">Aprovadas</div>
+    </div>
+    <div class="stat-card pend" style="padding:.85rem;cursor:pointer" onclick="document.getElementById('searchStatus').value='pending';filtrarConsulta()">
+      <div class="num" style="font-size:1.4rem">${pend}</div><div class="lbl">Pendentes</div>
+    </div>
+    <div class="stat-card reje" style="padding:.85rem;cursor:pointer" onclick="document.getElementById('searchStatus').value='rejected';filtrarConsulta()">
+      <div class="num" style="font-size:1.4rem">${repr}</div><div class="lbl">Reprovadas</div>
+    </div>`;
+
   const el=document.getElementById('consultaList');
   if(!filtered.length){
-    el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhuma solicitação encontrada para <strong>${consultaVendedorAtivo}</strong>.</p></div>`;
+    el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhuma solicitação encontrada.</p></div>`;
     return;
   }
   el.innerHTML=filtered.map(s=>renderSolCard(s,false)).join('');
@@ -733,10 +972,21 @@ function filtrarConsulta(){
 //  SOL CARD
 // ═══════════════════════════════════════════
 function renderSolCard(s,isAdmin){
-  const statusLabel={pending:'⏳ Aguardando Análise',approved:'✅ Aprovado',rejected:'❌ Reprovado'};
-  const badgeClass={pending:'badge-pending',approved:'badge-approved',rejected:'badge-rejected'};
+  const statusLabel={pending:'⏳ Aguardando Análise',approved:'✅ Aprovado',rejected:'❌ Reprovado',complement:'🔄 Aguardando Complemento'};
+  const badgeClass={pending:'badge-pending',approved:'badge-approved',rejected:'badge-rejected',complement:'badge-complement'};
   const hasNaoWarn=s.hasNao?`<div style="color:var(--red);font-size:.75rem;margin-top:.3rem">⚠️ Possui NÃO no checklist</div>`:'';
-  const obsHtml=s.obs?`<div class="sol-obs ${s.status}"><strong>📌 Obs do gestor:</strong> ${s.obs}</div>`:'';
+  const obsHtml=s.status==='complement'
+    ?`<div style="margin-top:.6rem;padding:.75rem 1rem;background:rgba(124,58,237,.1);border:1.5px solid var(--purple);border-radius:8px;font-size:.85rem">
+        <div style="color:var(--purple);font-weight:700;margin-bottom:.25rem">🔄 O gestor solicitou um complemento:</div>
+        <div style="color:var(--text);margin-bottom:.75rem">${s.obs||'Favor complementar a solicitação com as informações solicitadas.'}</div>
+        ${!isAdmin?`<button onclick="editarSolicitacao('${s.id}')" style="background:var(--purple);color:#fff;border:none;padding:.5rem 1.1rem;border-radius:7px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif">✏️ Complementar agora</button>`:''}
+      </div>`
+    :s.obs?(s.status==='rejected'
+      ?`<div style="margin-top:.6rem;padding:.75rem 1rem;background:rgba(229,57,53,.1);border:1.5px solid var(--red);border-radius:8px;font-size:.85rem">
+          <div style="color:var(--red);font-weight:700;margin-bottom:.25rem">❌ Motivo da reprovação:</div>
+          <div style="color:var(--text)">${s.obs}</div>
+        </div>`
+      :`<div class="sol-obs ${s.status}"><strong>📌 Obs do gestor:</strong> ${s.obs}</div>`):'';
 
   const adminActions=isAdmin?`
     <div style="margin-top:.75rem">
@@ -748,6 +998,7 @@ function renderSolCard(s,isAdmin){
         ${s.status!=='approved'?`<button class="btn-approve" onclick="updateStatus('${s.id}','approved')">✅ Aprovar</button>`:''}
         ${s.status!=='rejected'?`<button class="btn-danger" onclick="updateStatus('${s.id}','rejected')">❌ Reprovar</button>`:''}
         ${s.status!=='pending'?`<button class="btn-secondary" style="padding:.45rem .9rem;font-size:.78rem" onclick="updateStatus('${s.id}','pending')">↩ Voltar p/ análise</button>`:''}
+        ${s.status!=='complement'?`<button style="background:rgba(124,58,237,.1);color:var(--purple);border:1.5px solid var(--purple);padding:.45rem .9rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer" onclick="updateStatus('${s.id}','complement')">🔄 Devolver p/ complemento</button>`:''}
         <button style="margin-left:auto;background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;padding:.3rem .5rem" onclick="excluirSolicitacao('${s.id}')" title="Excluir solicitação">🗑️ Excluir</button>
       </div>
     </div>`:obsHtml;
@@ -755,11 +1006,14 @@ function renderSolCard(s,isAdmin){
   return `
   <div class="sol-card ${s.status}" id="card_${s.id}">
     <div class="sol-header">
+      <div style="display:flex;align-items:flex-start;gap:.6rem">
+        ${isAdmin&&s.status==='pending'?`<input type="checkbox" id="chk_lote_${s.id}" onchange="toggleLote('${s.id}')" style="margin-top:.2rem;cursor:pointer;width:16px;height:16px;accent-color:var(--cyan)">`:''}
       <div>
         <div class="sol-title">${s.tipo} — ${s.cliente}</div>
         <div class="sol-sub">${s.vendedor} · ${formatDate(s.data)}</div>
         <div class="sol-proto">${s.id}</div>
         ${hasNaoWarn}
+      </div>
       </div>
       <span class="badge ${badgeClass[s.status]}">${statusLabel[s.status]}</span>
     </div>
@@ -775,6 +1029,7 @@ function renderSolCard(s,isAdmin){
         <div class="detail-item"><span>Justificativa</span><strong>${s.justificativa||'-'}</strong></div>
         <div class="detail-item"><span>Sell In atrelado?</span><strong>${s.atrelado==='sim'?'✅ Sim':'⚠️ Apenas expectativa'}</strong></div>
       </div>
+      ${s.obsVendedor?`<div style="margin-top:.5rem;padding:.6rem .85rem;background:rgba(0,168,232,.07);border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;font-size:.82rem"><strong>💬 Obs do vendedor:</strong> ${s.obsVendedor}</div>`:''}
       <div style="margin-top:.75rem;font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem">Checklist</div>
       <div class="checklist-mini">
         ${PERGUNTAS.map((q,i)=>`
@@ -885,6 +1140,103 @@ async function updateStatus(id,newStatus){
 }
 
 // ═══════════════════════════════════════════
+//  LOTE
+// ═══════════════════════════════════════════
+let selecionados = [];
+
+function toggleLote(id){
+  const chk = document.getElementById('chk_lote_'+id);
+  if(chk && chk.checked){
+    if(!selecionados.includes(id)) selecionados.push(id);
+  } else {
+    selecionados = selecionados.filter(x=>x!==id);
+  }
+  const bar = document.getElementById('loteBar');
+  document.getElementById('loteCount').textContent = selecionados.length;
+  bar.style.display = selecionados.length ? 'flex' : 'none';
+}
+
+function limparSelecao(){
+  selecionados=[];
+  document.querySelectorAll('[id^=chk_lote_]').forEach(c=>c.checked=false);
+  document.getElementById('loteBar').style.display='none';
+}
+
+async function aprovarLote(){
+  if(!selecionados.length) return;
+  if(!confirm(`Aprovar ${selecionados.length} solicitação(ões)?`)) return;
+  showLoading('Aprovando em lote...');
+  for(const id of selecionados){
+    try{ await apiPost({action:'atualizar',id,status:'approved',obs:'Aprovado em lote'}); }catch(e){}
+    const idx=allSolicitacoes.findIndex(s=>s.id===id);
+    if(idx!==-1){allSolicitacoes[idx].status='approved';allSolicitacoes[idx].obs='Aprovado em lote';}
+  }
+  hideLoading();
+  toast(`✅ ${selecionados.length} solicitações aprovadas!`);
+  selecionados=[];
+  renderAdmin();
+}
+
+async function reprovarLote(){
+  if(!selecionados.length) return;
+  const motivo = prompt('Informe o motivo da reprovação (será aplicado a todas):');
+  if(!motivo || !motivo.trim()){ toast('Motivo obrigatório.','error'); return; }
+  showLoading('Reprovando em lote...');
+  for(const id of selecionados){
+    try{ await apiPost({action:'atualizar',id,status:'rejected',obs:motivo}); }catch(e){}
+    const idx=allSolicitacoes.findIndex(s=>s.id===id);
+    if(idx!==-1){allSolicitacoes[idx].status='rejected';allSolicitacoes[idx].obs=motivo;}
+  }
+  hideLoading();
+  toast(`❌ ${selecionados.length} solicitações reprovadas.`,'info');
+  selecionados=[];
+  renderAdmin();
+}
+
+// ═══════════════════════════════════════════
+//  EDITAR / COMPLEMENTAR
+// ═══════════════════════════════════════════
+function editarSolicitacao(id){
+  const s = allSolicitacoes.find(x=>x.id===id);
+  if(!s) return;
+
+  // Vai para aba solicitar
+  showPage('solicitar', document.getElementById('tab-solicitar'));
+
+  // Aguarda o DOM estar pronto e preenche os campos
+  setTimeout(()=>{
+    document.getElementById('f_cliente').value = s.cliente||'';
+    document.getElementById('f_data').value = new Date().toISOString().split('T')[0];
+    document.getElementById('f_vendedor').value = s.vendedor||'';
+    document.getElementById('f_tipo').value = s.tipo||'';
+    document.getElementById('f_justificativa').value = s.justificativa||'';
+    document.getElementById('f_sellin').value = s.sellin||'';
+    document.getElementById('f_sellout').value = s.sellout||'';
+    document.getElementById('f_valor').value = s.valor||'';
+    document.getElementById('f_atrelado').value = s.atrelado||'';
+    document.getElementById('f_obs').value = s.obsVendedor||'';
+
+    // Preenche checklist
+    if(s.checklist){
+      Object.keys(s.checklist).forEach(i=>{
+        const r=document.querySelector(`input[name=chk${i}][value="${s.checklist[i]}"]`);
+        if(r) r.checked=true;
+      });
+    }
+
+    // Aviso de complemento
+    document.getElementById('rascunhoAviso').style.display='flex';
+    document.getElementById('rascunhoAviso').innerHTML=`
+      <span>🔄 Complementando solicitação <strong>${id}</strong>. Adicione as informações solicitadas e reenvie.</span>
+      <button onclick="document.getElementById('rascunhoAviso').style.display='none'" style="background:none;border:none;color:#92610a;text-decoration:underline;cursor:pointer;font-size:.78rem">Fechar aviso</button>
+    `;
+
+    // Scroll para o topo
+    window.scrollTo({top:0, behavior:'smooth'});
+  }, 300);
+}
+
+// ═══════════════════════════════════════════
 //  EXCLUIR
 // ═══════════════════════════════════════════
 async function excluirSolicitacao(id){
@@ -905,12 +1257,20 @@ async function excluirSolicitacao(id){
 //  VERBAS CONFIG
 // ═══════════════════════════════════════════
 function renderVerbaConfig(){
-  document.getElementById('verbaConfig').innerHTML=allVerbas.map((v,i)=>{
+  document.getElementById('verbaConfig').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 140px;gap:.5rem;margin-bottom:.4rem">
+      <div style="font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Nome da categoria</div>
+      <div style="font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Budget total</div>
+    </div>
+  `+allVerbas.map((v,i)=>{
     const used=allSolicitacoes.filter(s=>s.status==='approved'&&matchVerbaCategory(s.tipo)===v.label).reduce((a,s)=>a+s.valor,0);
     const avail=v.total-used;
-    return`<div class="verba-edit-row">
-      <label>${v.label}<br><small style="color:${avail<0?'var(--red)':'var(--green)'}">Usado: ${fmtBRL(used)} · Disponível: ${fmtBRL(avail)}</small></label>
-      <input type="number" id="verba_${i}" value="${v.total}" min="0">
+    return`<div style="display:grid;grid-template-columns:1fr 140px;gap:.5rem;margin-bottom:.6rem;align-items:center">
+      <div>
+        <input type="text" id="verba_nome_${i}" value="${v.label}" style="width:100%;padding:.45rem .7rem;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'DM Sans',sans-serif">
+        <div style="font-size:.72rem;margin-top:.2rem;color:${avail<0?'var(--red)':'var(--green)'}">Usado: ${fmtBRL(used)} · Disponível: ${fmtBRL(avail)}</div>
+      </div>
+      <input type="number" id="verba_${i}" value="${v.total}" min="0" style="padding:.45rem .6rem;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'DM Sans',sans-serif;width:100%">
     </div>`;
   }).join('');
 
@@ -928,12 +1288,28 @@ function renderVerbaConfig(){
 }
 
 async function saveVerbaConfig(){
-  allVerbas.forEach((v,i)=>{const inp=document.getElementById('verba_'+i);if(inp)v.total=parseFloat(inp.value)||0});
+  allVerbas.forEach((v,i)=>{
+    const inp=document.getElementById('verba_'+i);
+    const nomeInp=document.getElementById('verba_nome_'+i);
+    if(inp) v.total=parseFloat(inp.value)||0;
+    if(nomeInp&&nomeInp.value.trim()) v.label=nomeInp.value.trim();
+  });
   showLoading('Salvando verbas...');
   try{
     await apiPost({action:'salvarVerbas',verbas:allVerbas});
-    hideLoading();toast('💾 Verbas por categoria salvas!');
+    hideLoading();
+    toast('💾 Verbas salvas!');
+    // Atualiza dropdown de tipos no formulário
+    atualizarTiposAcao();
   }catch(e){hideLoading();toast('Erro ao salvar.','error')}
+}
+
+function atualizarTiposAcao(){
+  const sel=document.getElementById('f_tipo');
+  if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Selecione...</option>'+allVerbas.map(v=>`<option value="${v.label}">${v.label}</option>`).join('');
+  if(cur) sel.value=cur;
 }
 
 async function addVendedor(){
@@ -985,6 +1361,114 @@ async function openVerbaModal(){
       <div class="verba-bar-bg"><div class="verba-bar-fill" style="width:${pct}%;background:${color}"></div></div>
     </div>`;
   }).join('');
+}
+
+// ═══════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════
+function renderDashboard(){
+  const list = allSolicitacoes;
+  const aprov = list.filter(s=>s.status==='approved');
+  const pend  = list.filter(s=>s.status==='pending');
+  const repr  = list.filter(s=>s.status==='rejected');
+  const totalGasto = aprov.reduce((a,s)=>a+s.valor,0);
+  const totalSolic = list.reduce((a,s)=>a+s.valor,0);
+
+  // Por vendedor
+  const vendMap={};
+  list.forEach(s=>{
+    if(!vendMap[s.vendedor]) vendMap[s.vendedor]={total:0,aprov:0,pend:0,repr:0};
+    vendMap[s.vendedor].total++;
+    if(s.status==='approved') vendMap[s.vendedor].aprov++;
+    if(s.status==='pending')  vendMap[s.vendedor].pend++;
+    if(s.status==='rejected') vendMap[s.vendedor].repr++;
+  });
+
+  // Por categoria
+  const catMap={};
+  aprov.forEach(s=>{
+    const cat=matchVerbaCategory(s.tipo);
+    catMap[cat]=(catMap[cat]||0)+s.valor;
+  });
+
+  // Verba geral
+  const totalVerba = allVerbas.reduce((a,v)=>a+v.total,0);
+  const pctUsado = totalVerba>0?Math.round((totalGasto/totalVerba)*100):0;
+  const colorPct = pctUsado>80?'var(--red)':pctUsado>50?'var(--amber)':'var(--green)';
+
+  // Prazo médio (dias entre criação e hoje para pendentes)
+  const hoje = Date.now();
+  const pendComPrazo = pend.filter(s=>s.createdAt);
+  const diasMedio = pendComPrazo.length
+    ? Math.round(pendComPrazo.reduce((a,s)=>a+(hoje-new Date(s.createdAt).getTime()),0)/pendComPrazo.length/86400000)
+    : 0;
+
+  // Pendentes vencendo (>5 dias)
+  const vencendo = pend.filter(s=>{
+    if(!s.createdAt) return false;
+    const dias=(hoje-new Date(s.createdAt).getTime())/86400000;
+    return dias>30;
+  });
+
+  document.getElementById('dashboardContent').innerHTML=`
+    <!-- KPIs -->
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem">
+      <div class="card" style="margin:0;text-align:center;padding:1.25rem">
+        <div style="font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;color:var(--cyan)">${list.length}</div>
+        <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Total de Solicitações</div>
+      </div>
+      <div class="card" style="margin:0;text-align:center;padding:1.25rem">
+        <div style="font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;color:${colorPct}">${pctUsado}%</div>
+        <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Verba Utilizada</div>
+      </div>
+      <div class="card" style="margin:0;text-align:center;padding:1.25rem">
+        <div style="font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;color:var(--green)">${fmtBRL(totalGasto)}</div>
+        <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Total Aprovado</div>
+      </div>
+      <div class="card" style="margin:0;text-align:center;padding:1.25rem">
+        <div style="font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;color:${diasMedio>5?'var(--red)':'var(--amber)'}">${diasMedio}d</div>
+        <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Dias Médio Pendente</div>
+      </div>
+    </div>
+
+    ${vencendo.length?`
+    <div style="background:rgba(229,57,53,.1);border:1.5px solid var(--red);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem">
+      <div style="font-family:'Sora',sans-serif;font-weight:700;color:var(--red);margin-bottom:.5rem">⚠️ ${vencendo.length} solicitação(ões) aguardam análise há mais de 30 dias!</div>
+      ${vencendo.map(s=>`<div style="font-size:.82rem;color:var(--text);padding:.2rem 0">• <strong>${s.id}</strong> — ${s.vendedor} · ${s.cliente} · ${Math.round((hoje-new Date(s.createdAt).getTime())/86400000)} dias</div>`).join('')}
+    </div>`:''}
+
+    <!-- Verba por categoria gráfico -->
+    <div class="card" style="margin-bottom:1.5rem">
+      <div class="card-title"><div class="dot"></div>💰 Verba por Categoria</div>
+      ${allVerbas.map(v=>{
+        const usado=catMap[v.label]||0;
+        const pct=v.total>0?Math.min(100,Math.round((usado/v.total)*100)):0;
+        const cor=pct>80?'var(--red)':pct>50?'var(--amber)':'var(--green)';
+        return`<div style="margin-bottom:.85rem">
+          <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.3rem">
+            <span style="font-weight:600;color:var(--navy)">${v.label}</span>
+            <span style="color:${cor}">${fmtBRL(usado)} / ${fmtBRL(v.total)} (${pct}%)</span>
+          </div>
+          <div style="height:10px;background:var(--border);border-radius:5px">
+            <div style="height:10px;border-radius:5px;background:${cor};width:${pct}%;transition:width .4s"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Por vendedor -->
+    <div class="card" style="margin-bottom:1.5rem">
+      <div class="card-title"><div class="dot"></div>👤 Por Vendedor</div>
+      ${Object.entries(vendMap).sort((a,b)=>b[1].total-a[1].total).map(([nome,v])=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border)">
+          <div style="font-size:.88rem;font-weight:600;color:var(--navy)">${nome}</div>
+          <div style="display:flex;gap:.5rem">
+            <span class="badge badge-approved">${v.aprov} ✅</span>
+            <span class="badge badge-pending">${v.pend} ⏳</span>
+            ${v.repr?`<span class="badge badge-rejected">${v.repr} ❌</span>`:''}
+          </div>
+        </div>`).join('')}
+    </div>`;
 }
 
 // ═══════════════════════════════════════════
@@ -1062,7 +1546,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   // Pré-carrega dados em background
   try{
     const r=await apiGet({action:'verbas'});
-    if(r.verbas) allVerbas=r.verbas;
+    if(r.verbas){ allVerbas=r.verbas; atualizarTiposAcao(); }
     const r2=await apiGet({action:'verbaVendedor'});
     if(r2.vendedores){
       allVerbaVendedor=r2.vendedores;
@@ -1070,6 +1554,14 @@ document.addEventListener('DOMContentLoaded',async()=>{
     }
   }catch(e){}
 });
+
+function atualizarTiposAcao(){
+  const sel=document.getElementById('f_tipo');
+  if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">Selecione...</option>'+allVerbas.map(v=>`<option value="${v.label}">${v.label}</option>`).join('');
+  if(cur) sel.value=cur;
+}
 
 function popularDropdownVendedores(){
   const opts = allVerbaVendedor.map(v=>`<option value="${v.nome}">${v.nome}</option>`).join('');
