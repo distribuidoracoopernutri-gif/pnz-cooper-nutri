@@ -1099,19 +1099,18 @@ function toggleDetail(id){
 // ═══════════════════════════════════════════
 //  ADMIN
 // ═══════════════════════════════════════════
-async function getAdminPwd(){
-  try{const r=await window.storage.get('pnz:adminpwd');return r?JSON.parse(r.value):ADMIN_PWD}catch(e){return ADMIN_PWD}
+function getAdminPwd(){
+  try{const r=localStorage.getItem('pnz:adminpwd');return r?r:ADMIN_PWD}catch(e){return ADMIN_PWD}
 }
 function checkAdmin(){
   const p=document.getElementById('adminPass').value;
-  getAdminPwd().then(pwd=>{
-    if(p===pwd){
-      adminLogged=true;
-      document.getElementById('adminLock').style.display='none';
-      document.getElementById('adminPanel').style.display='block';
-      initAdmin();
-    }else toast('Senha incorreta.','error');
-  });
+  const pwd=getAdminPwd();
+  if(p===pwd){
+    adminLogged=true;
+    document.getElementById('adminLock').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    initAdmin();
+  }else toast('Senha incorreta.','error');
 }
 function logoutAdmin(){
   adminLogged=false;
@@ -1123,7 +1122,7 @@ async function initAdmin(){
   if(!adminLogged) return;
   await carregarSolicitacoes(true);
   await carregarVerbas();
-  renderAdmin();
+  await renderAdmin();
 }
 
 async function carregarVerbas(){
@@ -1166,11 +1165,9 @@ async function renderAdmin(){
 
   // Carrega email salvo
   try{
-    const r=await window.storage.get('pnz:emailNotif');
-    if(r){
-      const emailEl=document.getElementById('emailNotif');
-      if(emailEl) emailEl.value=JSON.parse(r.value);
-    }
+    const emailSalvo = localStorage.getItem('pnz:emailNotif');
+    const emailEl = document.getElementById('emailNotif');
+    if(emailSalvo && emailEl) emailEl.value = emailSalvo;
   }catch(e){}
 }
 
@@ -1584,14 +1581,14 @@ async function exportCSV(){
 // ═══════════════════════════════════════════
 //  ALTERAR SENHA
 // ═══════════════════════════════════════════
-async function salvarEmailNotif(){
+function salvarEmailNotif(){
   const email = document.getElementById('emailNotif').value.trim();
   if(!email || !email.includes('@')){toast('Digite um e-mail válido.','error');return;}
   try{
-    await window.storage.set('pnz:emailNotif', JSON.stringify(email));
+    localStorage.setItem('pnz:emailNotif', email);
     document.getElementById('emailNotifStatus').textContent = '✅ E-mail salvo: ' + email;
     document.getElementById('emailNotifStatus').style.color = 'var(--green)';
-    toast('📧 E-mail salvo! Lembre de atualizar também no Apps Script.','success');
+    toast('📧 E-mail salvo!','success');
   }catch(e){ toast('Erro ao salvar.','error'); }
 }
 
@@ -1599,11 +1596,11 @@ async function alterarSenha(){
   const atual=document.getElementById('senhaAtual').value;
   const nova=document.getElementById('senhaNova').value;
   const conf=document.getElementById('senhaConfirm').value;
-  const pwd=await getAdminPwd();
+  const pwd=getAdminPwd();
   if(atual!==pwd){toast('Senha atual incorreta.','error');return}
   if(nova.length<4){toast('Nova senha muito curta.','error');return}
   if(nova!==conf){toast('Confirmação não confere.','error');return}
-  try{await window.storage.set('pnz:adminpwd',JSON.stringify(nova));}catch(e){}
+  try{localStorage.setItem('pnz:adminpwd', nova);}catch(e){}
   ADMIN_PWD=nova;
   ['senhaAtual','senhaNova','senhaConfirm'].forEach(id=>document.getElementById(id).value='');
   toast('🔑 Senha alterada com sucesso!');
