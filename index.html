@@ -458,13 +458,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="card">
         <div class="card-title"><div class="dot"></div>👤 Verba por Vendedor</div>
         <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Defina a cota e o PIN de acesso de cada vendedor. O PIN padrão é <strong>1234</strong>.</p>
-        <div style="display:flex;gap:.5rem;font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;padding:0 .2rem">
-          <div style="flex:1">Nome</div>
-          <div style="width:80px;text-align:center">Usado</div>
-          <div style="width:80px;text-align:center">Disp.</div>
-          <div style="width:80px;text-align:center">Cota R$</div>
-          <div style="width:70px;text-align:center">PIN 🔐</div>
-          <div style="width:32px"></div>
+        <div style="display:grid;grid-template-columns:1fr 70px 70px 100px 70px 32px;gap:.4rem;font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.5rem;padding:0 .2rem">
+          <div>Nome</div>
+          <div style="text-align:center">Usado</div>
+          <div style="text-align:center">Disp.</div>
+          <div style="text-align:center">Cota R$</div>
+          <div style="text-align:center">PIN 🔐</div>
+          <div></div>
         </div>
         <div id="verbaVendedorConfig"><div style="color:var(--muted);font-size:.85rem">Carregando...</div></div>
         <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
@@ -506,16 +506,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
       <div class="card" style="max-width:400px">
         <div class="card-title"><div class="dot"></div>📧 Notificação por E-mail</div>
-        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Configure o e-mail que receberá notificações quando chegar nova solicitação. A configuração é feita no Apps Script.</p>
-        <div style="background:var(--bg);border-radius:8px;padding:1rem;font-size:.82rem;color:var(--text)">
-          <div style="font-weight:600;margin-bottom:.5rem;color:var(--navy)">Como ativar:</div>
-          <ol style="padding-left:1.2rem;line-height:1.8">
-            <li>Abre o Apps Script da planilha</li>
-            <li>Encontra a linha <code style="background:var(--border);padding:.1rem .3rem;border-radius:3px">const EMAIL_NOTIF</code></li>
-            <li>Substitui pelo seu e-mail</li>
-            <li>Reimplanta como nova versão</li>
-          </ol>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem">Salve seu e-mail para receber notificações quando chegar nova solicitação.</p>
+        <div class="field" style="margin-bottom:1rem">
+          <label>E-mail para notificações</label>
+          <input type="email" id="emailNotif" placeholder="seu@email.com.br">
         </div>
+        <button class="btn-primary" onclick="salvarEmailNotif()">💾 Salvar E-mail</button>
+        <div id="emailNotifStatus" style="margin-top:.6rem;font-size:.78rem;color:var(--muted)"></div>
       </div>
     </div>
   </div>
@@ -1166,6 +1163,15 @@ function renderAdmin(){
   const el=document.getElementById('adminSolList');
   if(!sorted.length){el.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>Nenhuma solicitação encontrada.</p></div>`;return}
   el.innerHTML=sorted.map(s=>renderSolCard(s,true)).join('');
+
+  // Carrega email salvo
+  try{
+    const r=await window.storage.get('pnz:emailNotif');
+    if(r){
+      const emailEl=document.getElementById('emailNotif');
+      if(emailEl) emailEl.value=JSON.parse(r.value);
+    }
+  }catch(e){}
 }
 
 // ═══════════════════════════════════════════
@@ -1578,6 +1584,17 @@ async function exportCSV(){
 // ═══════════════════════════════════════════
 //  ALTERAR SENHA
 // ═══════════════════════════════════════════
+async function salvarEmailNotif(){
+  const email = document.getElementById('emailNotif').value.trim();
+  if(!email || !email.includes('@')){toast('Digite um e-mail válido.','error');return;}
+  try{
+    await window.storage.set('pnz:emailNotif', JSON.stringify(email));
+    document.getElementById('emailNotifStatus').textContent = '✅ E-mail salvo: ' + email;
+    document.getElementById('emailNotifStatus').style.color = 'var(--green)';
+    toast('📧 E-mail salvo! Lembre de atualizar também no Apps Script.','success');
+  }catch(e){ toast('Erro ao salvar.','error'); }
+}
+
 async function alterarSenha(){
   const atual=document.getElementById('senhaAtual').value;
   const nova=document.getElementById('senhaNova').value;
