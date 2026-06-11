@@ -1135,7 +1135,7 @@ async function carregarVerbas(){
   }catch(e){}
 }
 
-function renderAdmin(){
+async function renderAdmin(){
   document.getElementById('statTotal').textContent=allSolicitacoes.length;
   document.getElementById('statPend').textContent=allSolicitacoes.filter(s=>s.status==='pending').length;
   document.getElementById('statAppr').textContent=allSolicitacoes.filter(s=>s.status==='approved').length;
