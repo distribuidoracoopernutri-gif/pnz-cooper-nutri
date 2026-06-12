@@ -348,12 +348,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <!-- Identificação do vendedor -->
   <div id="consultaLogin" class="card" style="max-width:440px;margin:0 auto">
     <div class="card-title"><div class="dot"></div>👤 Identificação</div>
-    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Digite seu nome exatamente como usou na solicitação.</p>
-    <div class="field" style="margin-bottom:1rem">
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem">Selecione seu nome e digite seu PIN para acessar suas solicitações.</p>
+    <div class="field" style="margin-bottom:.75rem">
       <label>Seu nome</label>
       <select id="consultaNome">
         <option value="">Selecione seu nome...</option>
       </select>
+    </div>
+    <div class="field" style="margin-bottom:1rem">
+      <label>PIN de acesso 🔐</label>
+      <input type="password" id="consultaPin" placeholder="Digite seu PIN" maxlength="6" onkeydown="if(event.key==='Enter')entrarConsulta()" style="letter-spacing:4px;font-size:1.1rem;text-align:center">
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem">Não tem PIN? Solicite ao gestor. PIN padrão: 1234</div>
     </div>
     <button class="btn-primary" onclick="entrarConsulta()">🔍 Ver minhas solicitações</button>
   </div>
@@ -585,8 +590,30 @@ function hideLoading() {
 //  HELPERS
 // ═══════════════════════════════════════════
 function fmtBRL(v){return 'R$ '+(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2})}
-function formatDate(d){if(!d)return '-';try{const[y,m,dd]=String(d).split('-');return`${dd}/${m}/${y}`}catch(e){return d}}
-function formatDateTime(iso){if(!iso)return '-';try{const d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}catch(e){return iso}}
+function formatDate(d){
+  if(!d||d==='undefined') return '-';
+  try{
+    // Handle ISO date string from Google Sheets
+    const str = String(d);
+    if(str.includes('T') || str.includes('GMT')){
+      const dt = new Date(str);
+      if(!isNaN(dt)) return dt.toLocaleDateString('pt-BR');
+    }
+    if(str.includes('-')){
+      const[y,m,dd]=str.split('-');
+      if(dd&&m&&y) return `${dd.substring(0,2)}/${m}/${y}`;
+    }
+    return str;
+  }catch(e){return String(d)}
+}
+function formatDateTime(iso){
+  if(!iso||iso==='undefined') return '-';
+  try{
+    const d=new Date(iso);
+    if(isNaN(d)) return String(iso);
+    return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){return String(iso)}
+}
 function matchVerbaCategory(tipo){
   if(!tipo)return'Outros';
   if(tipo.includes('Treinamento'))return'Treinamento';
