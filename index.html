@@ -242,14 +242,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="field"><label>Tipo de Ação *</label>
         <select id="f_tipo" onchange="checkVerbaDisponivel()">
           <option value="">Selecione...</option>
-          <option>Treinamento</option>
-          <option>Autorização de Faixada</option>
-          <option>Congresso / Evento</option>
-          <option>Material PDV</option>
-          <option>Brinde / Bonificação</option>
-          <option>Desconto Comercial</option>
-          <option>Co-marketing</option>
-          <option>Outro</option>
         </select>
       </div>
     </div>
@@ -1083,7 +1075,7 @@ function renderSolCard(s,isAdmin){
         ${isAdmin&&s.status==='pending'?`<input type="checkbox" id="chk_lote_${s.id}" onchange="toggleLote('${s.id}')" style="margin-top:.2rem;cursor:pointer;width:16px;height:16px;accent-color:var(--cyan)">`:''}
       <div>
         <div class="sol-title">${s.tipo} — ${s.cliente}</div>
-        <div class="sol-sub">${s.vendedor} · ${formatDate(s.data)}</div>
+        <div class="sol-sub">${s.vendedor} · ${formatDate(s.data)||formatDate(s.createdAt)}</div>
         <div class="sol-proto">${s.id}</div>
         ${hasNaoWarn}
       </div>
@@ -1399,7 +1391,13 @@ function atualizarTiposAcao(){
   const sel=document.getElementById('f_tipo');
   if(!sel) return;
   const cur=sel.value;
-  sel.innerHTML='<option value="">Selecione...</option>'+allVerbas.map(v=>`<option value="${v.label}">${v.label}</option>`).join('');
+  const verbas = allVerbas.length ? allVerbas : [
+    {label:'Treinamento'},{label:'Autorização de Faixada'},
+    {label:'Congresso / Evento'},{label:'Material PDV'},
+    {label:'Brinde / Bonificação'},{label:'Desconto Comercial'},
+    {label:'Ação Conjunta Zoetis - Consultoras'},{label:'Outro'}
+  ];
+  sel.innerHTML='<option value="">Selecione...</option>'+verbas.map(v=>`<option value="${v.label}">${v.label}</option>`).join('');
   if(cur) sel.value=cur;
 }
 
@@ -1645,6 +1643,7 @@ async function alterarSenha(){
 // ═══════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',async()=>{
   renderChecklist();
+  atualizarTiposAcao(); // Load default types immediately
   document.getElementById('f_data').value=new Date().toISOString().split('T')[0];
   const today=new Date().toISOString().split('T')[0];
   const month=new Date();month.setDate(1);
@@ -1662,13 +1661,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   }catch(e){}
 });
 
-function atualizarTiposAcao(){
-  const sel=document.getElementById('f_tipo');
-  if(!sel) return;
-  const cur=sel.value;
-  sel.innerHTML='<option value="">Selecione...</option>'+allVerbas.map(v=>`<option value="${v.label}">${v.label}</option>`).join('');
-  if(cur) sel.value=cur;
-}
+
 
 function popularDropdownVendedores(){
   const opts = allVerbaVendedor.map(v=>`<option value="${v.nome}">${v.nome}</option>`).join('');
