@@ -561,15 +561,6 @@ async function apiPost(data) {
   return res.json();
 }
 
-async function apiPostComAnexo(data) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight CORS no Apps Script
-    body: JSON.stringify(data)
-  });
-  return res.json();
-}
-
 async function apiGet(params = {}) {
   const qs = new URLSearchParams(params).toString();
   const res = await fetch(API_URL + (qs ? '?' + qs : ''));
@@ -874,7 +865,7 @@ async function submitSolicitacao(){
     sellin:parseFloat(sellin),sellout:parseFloat(sellout),
     valor:parseFloat(valor),atrelado,checklist,hasNao,
     obsVendedor,
-    anexos: anexoData || [],
+    anexo: anexoData && anexoData.length ? anexoData : null,
     createdAt:new Date().toISOString(),
   };
 
@@ -885,7 +876,7 @@ async function submitSolicitacao(){
     showLoading('Enviando complemento...');
     try{
       // Atualiza status de volta para pending com dados novos
-      const res = await apiPostComAnexo({action:'complementar', id:editandoId, data:sol});
+      const res = await apiPost({action:'complementar', id:editandoId, data:sol});
       hideLoading();
       if(res.ok){
         const idx = allSolicitacoes.findIndex(s=>s.id===editandoId);
@@ -901,7 +892,7 @@ async function submitSolicitacao(){
     // MODO NORMAL — cria nova solicitação
     showLoading('Enviando solicitação...');
     try {
-      const res = await apiPostComAnexo({action:'criar', data:sol});
+      const res = await apiPost({action:'criar', data:sol});
       hideLoading();
       if(res.ok){
         allSolicitacoes.push({...sol, status:'pending', obs:''});
@@ -1097,6 +1088,7 @@ function renderSolCard(s,isAdmin){
       <div class="sol-field"><span>Sell In</span><strong>${fmtBRL(s.sellin)}</strong></div>
       <div class="sol-field"><span>Sell Out Esperado</span><strong>${fmtBRL(s.sellout)}</strong></div>
     </div>
+    ${s.anexo&&(Array.isArray(s.anexo)?s.anexo.length:s.anexo.data)?`<div style="margin-top:.4rem;font-size:.75rem;color:var(--cyan)">📎 ${Array.isArray(s.anexo)?s.anexo.length+' anexo(s)':'1 anexo'} — clique em "Ver detalhes" para acessar</div>`:''}
     ${!isAdmin?obsHtml:''}
     <span class="sol-expand" onclick="toggleDetail('${s.id}')">▼ Ver detalhes</span>
     <div class="sol-detail" id="detail_${s.id}">
@@ -1105,10 +1097,6 @@ function renderSolCard(s,isAdmin){
         <div class="detail-item"><span>Sell In atrelado?</span><strong>${s.atrelado==='sim'?'✅ Sim':'⚠️ Apenas expectativa'}</strong></div>
       </div>
       ${s.obsVendedor?`<div style="margin-top:.5rem;padding:.6rem .85rem;background:rgba(0,168,232,.07);border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;font-size:.82rem"><strong>💬 Obs do vendedor:</strong> ${s.obsVendedor}</div>`:''}
-      ${s.anexosUrls?`<div style="margin-top:.5rem">
-        <div style="font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.3rem">📎 Anexos</div>
-        ${s.anexosUrls.split('|').map((url,i)=>`<a href="${url.trim()}" target="_blank" rel="noopener" style="display:inline-block;color:var(--cyan);font-size:.82rem;margin:0 .6rem .3rem 0;text-decoration:underline">📎 Arquivo ${i+1}</a>`).join('')}
-      </div>`:''}
       <div style="margin-top:.75rem;font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem">Checklist</div>
       <div class="checklist-mini">
         ${PERGUNTAS.map((q,i)=>`
