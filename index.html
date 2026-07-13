@@ -60,6 +60,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .checklist-item .q{flex:1;padding-right:1rem}
 .radio-pair{display:flex;gap:.4rem}
 .radio-pair label{display:flex;align-items:center;gap:.25rem;cursor:pointer;font-size:.82rem;font-weight:600;padding:.28rem .65rem;border-radius:6px;border:1.5px solid var(--border);transition:all .15s}
+.produto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem}
+.produto-chip{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem;font-weight:600;color:var(--text);padding:.5rem .7rem;border-radius:8px;border:1.5px solid var(--border);transition:all .15s;background:#fff}
+.produto-chip:hover{border-color:var(--cyan)}
+.produto-chip:has(input:checked){border-color:var(--cyan);background:rgba(0,168,232,.1);color:var(--blue)}
+.produto-chip input[type=checkbox]{accent-color:var(--cyan);width:15px;height:15px;flex-shrink:0}
 .radio-pair input[type=radio]{display:none}
 .radio-sim:has(input:checked){border-color:var(--green);background:rgba(0,200,83,.1);color:var(--green)}
 .radio-nao:has(input:checked){border-color:var(--red);background:rgba(229,57,53,.1);color:var(--red)}
@@ -247,13 +252,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
   <div class="card">
+    <div class="card-title"><div class="dot"></div>🛒 Produtos Envolvidos</div>
+    <div class="field">
+      <label>Produtos Envolvidos *</label>
+      <input type="text" id="f_produtos" placeholder="Ex: Simparic, Apoquel, Librela..." oninput="salvarRascunho()">
+    </div>
+  </div>
+  <div class="card">
     <div class="card-title"><div class="dot"></div>Detalhes da Ação</div>
     <div class="form-grid one">
-      <div class="field"><label>Justificativa Estratégica *</label><textarea id="f_justificativa" placeholder="Por que esta ação é importante? Qual o objetivo?" oninput="salvarRascunho()"></textarea></div>
+      <div class="field"><label>Cenário/Oportunidade *</label><textarea id="f_cenario" placeholder="Qual o contexto atual? Que oportunidade foi identificada?" oninput="salvarRascunho()"></textarea></div>
+      <div class="field"><label>O que será executado *</label><textarea id="f_executado" placeholder="Descreva a ação que será realizada." oninput="salvarRascunho()"></textarea></div>
+      <div class="field"><label>Objetivo da ação *</label><textarea id="f_objetivo" placeholder="Qual o objetivo principal desta ação?" oninput="salvarRascunho()"></textarea></div>
+      <div class="field"><label>Impacto Esperado *</label><textarea id="f_impacto" placeholder="Qual resultado/impacto se espera obter?" oninput="salvarRascunho()"></textarea></div>
     </div>
     <div class="form-grid" style="margin-top:1rem">
       <div class="field"><label>Sell In Gerado (R$) *</label><input type="number" id="f_sellin" placeholder="0" oninput="salvarRascunho()"></div>
       <div class="field"><label>Sell Out Esperado (R$) *</label><input type="number" id="f_sellout" placeholder="0" oninput="salvarRascunho()"></div>
+      <div class="field"><label>Porcentagem de Crescimento Esperado *</label>
+        <select id="f_crescimento" onchange="salvarRascunho()">
+          <option value="">Selecione...</option>
+          <option value="10%">10%</option>
+          <option value="20%">20%</option>
+          <option value="30%">30%</option>
+          <option value="+30%">+ de 30%</option>
+        </select>
+      </div>
       <div class="field">
         <label>Valor da Ação / Gasto (R$) *</label>
         <input type="number" id="f_valor" placeholder="0" oninput="checkVerbaDisponivel()">
@@ -726,9 +750,14 @@ function salvarRascunho(){
     data: document.getElementById('f_data').value,
     vendedor: document.getElementById('f_vendedor').value,
     tipo: document.getElementById('f_tipo').value,
-    justificativa: document.getElementById('f_justificativa').value,
+    cenario: document.getElementById('f_cenario').value,
+    executado: document.getElementById('f_executado').value,
+    objetivo: document.getElementById('f_objetivo').value,
+    impacto: document.getElementById('f_impacto').value,
     sellin: document.getElementById('f_sellin').value,
     sellout: document.getElementById('f_sellout').value,
+    crescimento: document.getElementById('f_crescimento').value,
+    produtos: document.getElementById('f_produtos').value,
     valor: document.getElementById('f_valor').value,
     atrelado: document.getElementById('f_atrelado').value,
     obs: document.getElementById('f_obs').value,
@@ -749,9 +778,14 @@ function carregarRascunho(){
     if(d.data) document.getElementById('f_data').value=d.data;
     if(d.vendedor) document.getElementById('f_vendedor').value=d.vendedor;
     if(d.tipo) document.getElementById('f_tipo').value=d.tipo;
-    if(d.justificativa) document.getElementById('f_justificativa').value=d.justificativa;
+    if(d.cenario) document.getElementById('f_cenario').value=d.cenario;
+    if(d.executado) document.getElementById('f_executado').value=d.executado;
+    if(d.objetivo) document.getElementById('f_objetivo').value=d.objetivo;
+    if(d.impacto) document.getElementById('f_impacto').value=d.impacto;
     if(d.sellin) document.getElementById('f_sellin').value=d.sellin;
     if(d.sellout) document.getElementById('f_sellout').value=d.sellout;
+    if(d.crescimento) document.getElementById('f_crescimento').value=d.crescimento;
+    if(d.produtos) document.getElementById('f_produtos').value=d.produtos;
     if(d.valor) document.getElementById('f_valor').value=d.valor;
     if(d.atrelado) document.getElementById('f_atrelado').value=d.atrelado;
     if(d.obs) document.getElementById('f_obs').value=d.obs;
@@ -849,10 +883,13 @@ function handleAnexo(input){
 async function submitSolicitacao(){
   const get=id=>document.getElementById(id).value.trim();
   const cliente=get('f_cliente'),data=get('f_data'),vendedor=get('f_vendedor'),
-        tipo=get('f_tipo'),just=get('f_justificativa'),
+        tipo=get('f_tipo'),
+        cenario=get('f_cenario'),executado=get('f_executado'),objetivo=get('f_objetivo'),impacto=get('f_impacto'),
         sellin=get('f_sellin'),sellout=get('f_sellout'),valor=get('f_valor'),
+        crescimento=get('f_crescimento'),
+        produtos=get('f_produtos'),
         atrelado=get('f_atrelado');
-  if(!cliente||!data||!vendedor||!tipo||!just||!sellin||!sellout||!valor||!atrelado){
+  if(!cliente||!data||!vendedor||!tipo||!cenario||!executado||!objetivo||!impacto||!sellin||!sellout||!valor||!crescimento||!produtos||!atrelado){
     toast('Preencha todos os campos obrigatórios.','error');return;
   }
   // Verifica se está no modo simplificado ou detalhado
@@ -880,7 +917,8 @@ async function submitSolicitacao(){
   const id='PNZ-'+Date.now().toString(36).toUpperCase().slice(-6);
   const obsVendedor = document.getElementById('f_obs').value.trim();
   const sol={
-    id,cliente,data,vendedor,tipo,justificativa:just,
+    id,cliente,data,vendedor,tipo,cenario,executado,objetivo,impacto,crescimento,
+    produtos,
     sellin:parseFloat(sellin),sellout:parseFloat(sellout),
     valor:parseFloat(valor),atrelado,checklist,hasNao,
     obsVendedor,
@@ -929,7 +967,9 @@ async function submitSolicitacao(){
 }
 
 function resetForm(){
-  ['f_cliente','f_data','f_vendedor','f_justificativa','f_sellin','f_sellout','f_valor'].forEach(id=>document.getElementById(id).value='');
+  ['f_cliente','f_data','f_vendedor','f_cenario','f_executado','f_objetivo','f_impacto','f_sellin','f_sellout','f_valor'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f_crescimento').value='';
+  document.getElementById('f_produtos').value='';
   document.getElementById('f_tipo').value='';
   document.getElementById('f_atrelado').value='';
   document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
@@ -1156,7 +1196,12 @@ function renderSolCard(s,isAdmin){
     <span class="sol-expand" onclick="toggleDetail('${s.id}')">▼ Ver detalhes</span>
     <div class="sol-detail" id="detail_${s.id}">
       <div class="detail-grid">
-        <div class="detail-item"><span>Justificativa</span><strong>${s.justificativa||'-'}</strong></div>
+        <div class="detail-item"><span>Cenário/Oportunidade</span><strong>${s.cenario||s.justificativa||'-'}</strong></div>
+        <div class="detail-item"><span>O que será executado</span><strong>${s.executado||'-'}</strong></div>
+        <div class="detail-item"><span>Objetivo da ação</span><strong>${s.objetivo||'-'}</strong></div>
+        <div class="detail-item"><span>Impacto Esperado</span><strong>${s.impacto||'-'}</strong></div>
+        <div class="detail-item"><span>% Crescimento Esperado</span><strong>${s.crescimento||'-'}</strong></div>
+        <div class="detail-item" style="grid-column:1/-1"><span>Produtos Envolvidos</span><strong>${s.produtos||'-'}</strong></div>
         <div class="detail-item"><span>Sell In atrelado?</span><strong>${s.atrelado==='sim'?'✅ Sim':'⚠️ Apenas expectativa'}</strong></div>
       </div>
       ${s.obsVendedor?`<div style="margin-top:.5rem;padding:.6rem .85rem;background:rgba(0,168,232,.07);border-left:3px solid var(--cyan);border-radius:0 6px 6px 0;font-size:.82rem"><strong>💬 Obs do vendedor:</strong> ${s.obsVendedor}</div>`:''}
@@ -1346,7 +1391,12 @@ function editarSolicitacao(id){
     document.getElementById('f_data').value = new Date().toISOString().split('T')[0];
     document.getElementById('f_vendedor').value = s.vendedor||'';
     document.getElementById('f_tipo').value = s.tipo||'';
-    document.getElementById('f_justificativa').value = s.justificativa||'';
+    document.getElementById('f_cenario').value = s.cenario||s.justificativa||'';
+    document.getElementById('f_executado').value = s.executado||'';
+    document.getElementById('f_objetivo').value = s.objetivo||'';
+    document.getElementById('f_impacto').value = s.impacto||'';
+    document.getElementById('f_crescimento').value = s.crescimento||'';
+    document.getElementById('f_produtos').value = s.produtos||'';
     document.getElementById('f_sellin').value = s.sellin||'';
     document.getElementById('f_sellout').value = s.sellout||'';
     document.getElementById('f_valor').value = s.valor||'';
