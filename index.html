@@ -84,6 +84,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .badge-approved{background:rgba(0,200,83,.15);color:var(--green);border:1px solid var(--green)}
 .badge-rejected{background:rgba(229,57,53,.15);color:var(--red);border:1px solid var(--red)}
 .badge-complement{background:rgba(124,58,237,.15);color:var(--purple);border:1px solid var(--purple)}
+.badge-zoetis{background:rgba(26,74,138,.15);color:var(--blue);border:1px solid var(--blue)}
 .protocol-box{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .proto-big{font-family:'Sora',sans-serif;font-size:2rem;font-weight:800;color:var(--cyan);letter-spacing:3px;background:var(--bg);border:2px dashed var(--cyan);border-radius:12px;padding:.75rem 2rem;display:inline-block;margin-bottom:1.5rem}
 .sol-card{background:var(--card);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:.85rem;box-shadow:var(--shadow);border-left:4px solid var(--border);transition:all .2s}
@@ -91,6 +92,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .sol-card.approved{border-left-color:var(--green)}
 .sol-card.rejected{border-left-color:var(--red)}
 .sol-card.complement{border-left-color:var(--purple)}
+.sol-card.zoetis{border-left-color:var(--blue)}
 .sol-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;gap:.75rem}
 .sol-title{font-family:'Sora',sans-serif;font-weight:700;font-size:.92rem;color:var(--navy)}
 .sol-sub{font-size:.78rem;color:var(--muted);margin-top:.2rem}
@@ -113,6 +115,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .sol-obs.approved{background:rgba(0,200,83,.08);border-left-color:var(--green)}
 .sol-obs.rejected{background:rgba(229,57,53,.08);border-left-color:var(--red)}
 .sol-obs.pending{background:rgba(255,179,0,.08)}
+.sol-obs.zoetis{background:rgba(26,74,138,.08);border-left-color:var(--blue)}
 .obs-field textarea{width:100%;padding:.5rem .7rem;border:1.5px solid var(--border);border-radius:6px;font-size:.82rem;font-family:'DM Sans',sans-serif;resize:vertical;min-height:60px;margin-bottom:.5rem}
 .obs-field textarea:focus{outline:none;border-color:var(--cyan)}
 .search-box{display:flex;gap:.75rem;background:var(--card);padding:1.25rem 1.5rem;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.5rem;align-items:flex-end;flex-wrap:wrap}
@@ -125,6 +128,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .stat-card.appr .num{color:var(--green)}
 .stat-card.reje .num{color:var(--red)}
 .stat-card.total .num{color:var(--cyan)}
+.stat-card.zoet .num{color:var(--blue)}
 .vend-verba-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.6rem;flex-wrap:wrap}
 .vend-verba-row .vv-name{flex:1;min-width:120px;font-size:.85rem;color:var(--muted)}
 .vend-verba-row input{width:130px;padding:.4rem .6rem;border:1px solid var(--border);border-radius:6px;font-size:.88rem;font-family:'DM Sans',sans-serif}
@@ -392,6 +396,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
           <option value="pending">⏳ Pendente</option>
           <option value="approved">✅ Aprovado</option>
           <option value="rejected">❌ Reprovado</option>
+          <option value="zoetis">🔵 Aguardando Aprovação Zoetis</option>
         </select>
         <button class="btn-secondary" onclick="carregarSolicitacoes(true).then(filtrarConsulta)" style="font-size:.82rem;padding:.45rem .9rem">🔄 Atualizar</button>
         <button class="btn-secondary" onclick="sairConsulta()" style="font-size:.82rem;padding:.45rem .9rem">↩ Sair</button>
@@ -427,6 +432,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="stats-row">
       <div class="stat-card total"><div class="num" id="statTotal">0</div><div class="lbl">Total</div></div>
       <div class="stat-card pend"><div class="num" id="statPend">0</div><div class="lbl">Pendentes</div></div>
+      <div class="stat-card zoet"><div class="num" id="statZoetis">0</div><div class="lbl">Aguard. Zoetis</div></div>
       <div class="stat-card appr"><div class="num" id="statAppr">0</div><div class="lbl">Aprovadas</div></div>
       <div class="stat-card reje"><div class="num" id="statReje">0</div><div class="lbl">Reprovadas</div></div>
     </div>
@@ -445,6 +451,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
           <option value="">Todos status</option>
           <option value="pending">⏳ Pendentes</option>
           <option value="complement">🔄 Complemento</option>
+          <option value="zoetis">🔵 Aguard. Zoetis</option>
           <option value="approved">✅ Aprovados</option>
           <option value="rejected">❌ Reprovados</option>
         </select>
@@ -505,7 +512,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
             <div class="field"><label>Até</label><input type="date" id="relAte"></div>
             <div class="field"><label>Status</label>
               <select id="relStatus" style="padding:.55rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;font-family:'DM Sans',sans-serif">
-                <option value="">Todos</option><option value="pending">Pendente</option><option value="approved">Aprovado</option><option value="rejected">Reprovado</option>
+                <option value="">Todos</option><option value="pending">Pendente</option><option value="complement">Complemento</option><option value="zoetis">Aguard. Zoetis</option><option value="approved">Aprovado</option><option value="rejected">Reprovado</option>
               </select>
             </div>
           </div>
@@ -1141,8 +1148,8 @@ function renderAnexos(raw){
 //  SOL CARD
 // ═══════════════════════════════════════════
 function renderSolCard(s,isAdmin){
-  const statusLabel={pending:'⏳ Aguardando Análise',approved:'✅ Aprovado',rejected:'❌ Reprovado',complement:'🔄 Aguardando Complemento'};
-  const badgeClass={pending:'badge-pending',approved:'badge-approved',rejected:'badge-rejected',complement:'badge-complement'};
+  const statusLabel={pending:'⏳ Aguardando Análise',approved:'✅ Aprovado',rejected:'❌ Reprovado',complement:'🔄 Aguardando Complemento',zoetis:'🔵 Incluído no PNZ e Aguardando Aprovação Zoetis'};
+  const badgeClass={pending:'badge-pending',approved:'badge-approved',rejected:'badge-rejected',complement:'badge-complement',zoetis:'badge-zoetis'};
   const hasNaoWarn=s.hasNao?`<div style="color:var(--red);font-size:.75rem;margin-top:.3rem">⚠️ Possui NÃO no checklist</div>`:'';
   const obsHtml=s.status==='complement'
     ?`<div style="margin-top:.6rem;padding:.75rem 1rem;background:rgba(124,58,237,.1);border:1.5px solid var(--purple);border-radius:8px;font-size:.85rem">
@@ -1166,6 +1173,7 @@ function renderSolCard(s,isAdmin){
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
         ${s.status!=='approved'?`<button class="btn-approve" onclick="updateStatus('${s.id}','approved')">✅ Aprovar</button>`:''}
         ${s.status!=='rejected'?`<button class="btn-danger" onclick="updateStatus('${s.id}','rejected')">❌ Reprovar</button>`:''}
+        ${s.status!=='zoetis'?`<button style="background:rgba(26,74,138,.1);color:var(--blue);border:1.5px solid var(--blue);padding:.45rem .9rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer" onclick="updateStatus('${s.id}','zoetis')">🔵 Incluído no PNZ / Aguard. Zoetis</button>`:''}
         ${s.status!=='pending'?`<button class="btn-secondary" style="padding:.45rem .9rem;font-size:.78rem" onclick="updateStatus('${s.id}','pending')">↩ Voltar p/ análise</button>`:''}
         ${s.status!=='complement'?`<button style="background:rgba(124,58,237,.1);color:var(--purple);border:1.5px solid var(--purple);padding:.45rem .9rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer" onclick="updateStatus('${s.id}','complement')">🔄 Devolver p/ complemento</button>`:''}
         <button style="margin-left:auto;background:none;border:none;color:var(--muted);font-size:.75rem;cursor:pointer;padding:.3rem .5rem" onclick="excluirSolicitacao('${s.id}')" title="Excluir solicitação">🗑️ Excluir</button>
@@ -1267,6 +1275,7 @@ async function carregarVerbas(){
 async function renderAdmin(){
   document.getElementById('statTotal').textContent=allSolicitacoes.length;
   document.getElementById('statPend').textContent=allSolicitacoes.filter(s=>s.status==='pending').length;
+  document.getElementById('statZoetis').textContent=allSolicitacoes.filter(s=>s.status==='zoetis').length;
   document.getElementById('statAppr').textContent=allSolicitacoes.filter(s=>s.status==='approved').length;
   document.getElementById('statReje').textContent=allSolicitacoes.filter(s=>s.status==='rejected').length;
 
@@ -1280,7 +1289,7 @@ async function renderAdmin(){
   const st=document.getElementById('adminFilterStatus').value;
   const vf=document.getElementById('adminFilterVendedor').value;
   const sorted=[...allSolicitacoes].sort((a,b)=>{
-    const o={pending:0,rejected:1,approved:2};
+    const o={pending:0,complement:1,zoetis:2,rejected:3,approved:4};
     return o[a.status]-o[b.status]||new Date(b.createdAt)-new Date(a.createdAt);
   }).filter(s=>{
     const qMatch=!q||s.id.toLowerCase().includes(q)||s.cliente.toLowerCase().includes(q)||s.vendedor.toLowerCase().includes(q);
@@ -1314,7 +1323,7 @@ async function updateStatus(id,newStatus){
     if(res.ok){
       const idx=allSolicitacoes.findIndex(s=>s.id===id);
       if(idx!==-1){allSolicitacoes[idx].status=newStatus;allSolicitacoes[idx].obs=obs;}
-      const labels={approved:'✅ Aprovado com sucesso',rejected:'❌ Reprovado',pending:'↩ Retornado para análise'};
+      const labels={approved:'✅ Aprovado com sucesso',rejected:'❌ Reprovado',pending:'↩ Retornado para análise',complement:'🔄 Devolvido para complemento',zoetis:'🔵 Incluído no PNZ — aguardando aprovação Zoetis'};
       toast(labels[newStatus]);
       renderAdmin();
     }else toast('Erro ao atualizar: '+(res.erro||''),'error');
@@ -1714,7 +1723,7 @@ async function exportCSV(){
   const rows=filtered.map(s=>[
     s.id,s.data,`"${s.vendedor}"`,`"${s.cliente}"`,`"${s.tipo}"`,
     s.valor,s.sellin,s.sellout,
-    s.status==='approved'?'Aprovado':s.status==='rejected'?'Reprovado':'Pendente',
+    s.status==='approved'?'Aprovado':s.status==='rejected'?'Reprovado':s.status==='complement'?'Aguardando Complemento':s.status==='zoetis'?'Incluído no PNZ - Aguardando Aprovação Zoetis':'Pendente',
     `"${(s.obs||'').replace(/"/g,"'")}"`
   ].join(','));
   const csv=[header,...rows].join('\n');
